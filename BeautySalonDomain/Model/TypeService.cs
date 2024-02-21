@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BeautySalonDomain.Model;
 
 public partial class TypeService : Entity
 {
-    public string Name { get; set; } = null!;
+    public TypeService()
+    {
+        Services = new HashSet<Service>();
+    }
 
-    public virtual ICollection<Service> Services { get; set; } = new List<Service>();
+    [Required(ErrorMessage = "Введіть категорію")]
+    [Display(Name = "Категорія")]
+    public string Name { get; set; }
+
+    public virtual ICollection<Service> Services { get; set; }
 }
