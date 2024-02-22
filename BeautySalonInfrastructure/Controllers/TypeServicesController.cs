@@ -40,8 +40,8 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-           // return View(typeService);
-           return RedirectToAction("Index", "Services", new { id = typeService.Id, name =  typeService.Name });
+            // return View(typeService);
+            return RedirectToAction("Index", "Services", new { id = typeService.Id, name = typeService.Name });
         }
 
         // GET: TypeServices/Create
