@@ -6,12 +6,21 @@ namespace BeautySalonDomain.Model;
 
 public partial class Service : Entity
 {
+    private string _name;
+
+    [Required(ErrorMessage = "Введіть назву послуги")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Назва послуги не може містити у собі менше двох символів")]
     [Display(Name = "Послуга")]
-    public string Name { get; set; } = null!;
+    public string Name
+    {
+        get => _name;
+        set => _name = value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
+    }
 
     [Display(Name = "Опис")]
     public string Description { get; set; } = null!;
 
+    [Required(ErrorMessage = "Укажіть ціну послуги")]
     [Display(Name = "Ціна")]
     public int Price { get; set; }
 
