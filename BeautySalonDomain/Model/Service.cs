@@ -20,5 +20,6 @@ public partial class Service : Entity
 
     public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
+    [Display(Name = "Категорія")]
     public virtual TypeService TypeService { get; set; } = null!;
 }

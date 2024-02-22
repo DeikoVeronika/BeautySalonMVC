@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<BeautySalonDomain.Model.Service>
 
 @{
-    ViewData["Title"] = "Послуги";
+    ViewData["Title"] = "Послуги доступні у категорії";
 }
 
-<h1>Послуги @ViewBag.TypeServiceName</h1>
+<h1>Послуги доступні у категорії @ViewBag.TypeServiceName</h1>
 
 <p>
     @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId })
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.TypeService.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
             </td>
         </tr>
 }
