@@ -10,40 +10,23 @@ using BeautySalonInfrastructure;
 
 namespace BeautySalonInfrastructure.Controllers
 {
-    public class EmployeesController : Controller
+    public class EmployeeServicesController : Controller
     {
         private readonly DbbeautySalonContext _context;
 
-        public EmployeesController(DbbeautySalonContext context)
+        public EmployeeServicesController(DbbeautySalonContext context)
         {
             _context = context;
         }
 
-        // GET: Employees
-        public async Task<IActionResult> Index(int? id, string? name)
+        // GET: EmployeeServices
+        public async Task<IActionResult> Index()
         {
-            if (id == null) return RedirectToAction("Employees", "Index");
-
-            ViewBag.PositionsId = id;
-            ViewBag.PositionsName = name;
-
-            var employeeByPosition = _context.Employees.Where(e => e.PositionsId == id).Include(e => e.Positions );
-            return View(await employeeByPosition.ToListAsync());
-
+            var dbbeautySalonContext = _context.EmployeeServices.Include(e => e.Employees);
+            return View(await dbbeautySalonContext.ToListAsync());
         }
 
-        /*public async Task<IActionResult> Index(int? id, string? name)
-        {
-            if (id == null) return RedirectToAction("Services", "Index");
-
-            ViewBag.TypeServiceId = id;
-            ViewBag.TypeServiceName = name;
-            var serviceByTypeService = _context.Services.Where(b => b.TypeServiceId == id).Include(b => b.TypeService);
-
-            return View(await serviceByTypeService.ToListAsync());
-        }*/
-
-        // GET: Employees/Details/5
+        // GET: EmployeeServices/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -51,42 +34,42 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Positions)
+            var employeeService = await _context.EmployeeServices
+                .Include(e => e.Employees)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (employeeService == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(employeeService);
         }
 
-        // GET: Employees/Create
+        // GET: EmployeeServices/Create
         public IActionResult Create()
         {
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name");
+            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name");
             return View();
         }
 
-        // POST: Employees/Create
+        // POST: EmployeeServices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,PositionsId,Id")] Employee employee)
+        public async Task<IActionResult> Create([Bind("ServicesId,EmployeesId,Id")] EmployeeService employeeService)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
+                _context.Add(employeeService);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
-            return View(employee);
+            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
+            return View(employeeService);
         }
 
-        // GET: Employees/Edit/5
+        // GET: EmployeeServices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -94,23 +77,23 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee == null)
+            var employeeService = await _context.EmployeeServices.FindAsync(id);
+            if (employeeService == null)
             {
                 return NotFound();
             }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
-            return View(employee);
+            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
+            return View(employeeService);
         }
 
-        // POST: Employees/Edit/5
+        // POST: EmployeeServices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,PositionsId,Id")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("ServicesId,EmployeesId,Id")] EmployeeService employeeService)
         {
-            if (id != employee.Id)
+            if (id != employeeService.Id)
             {
                 return NotFound();
             }
@@ -119,12 +102,12 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
+                    _context.Update(employeeService);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Id))
+                    if (!EmployeeServiceExists(employeeService.Id))
                     {
                         return NotFound();
                     }
@@ -135,11 +118,11 @@ namespace BeautySalonInfrastructure.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
-            return View(employee);
+            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
+            return View(employeeService);
         }
 
-        // GET: Employees/Delete/5
+        // GET: EmployeeServices/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,35 +130,35 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            var employee = await _context.Employees
-                .Include(e => e.Positions)
+            var employeeService = await _context.EmployeeServices
+                .Include(e => e.Employees)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (employee == null)
+            if (employeeService == null)
             {
                 return NotFound();
             }
 
-            return View(employee);
+            return View(employeeService);
         }
 
-        // POST: Employees/Delete/5
+        // POST: EmployeeServices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            if (employee != null)
+            var employeeService = await _context.EmployeeServices.FindAsync(id);
+            if (employeeService != null)
             {
-                _context.Employees.Remove(employee);
+                _context.EmployeeServices.Remove(employeeService);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
+        private bool EmployeeServiceExists(int id)
         {
-            return _context.Employees.Any(e => e.Id == id);
+            return _context.EmployeeServices.Any(e => e.Id == id);
         }
     }
 }
