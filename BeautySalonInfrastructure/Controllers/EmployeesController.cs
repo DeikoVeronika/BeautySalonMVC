@@ -25,7 +25,7 @@ namespace BeautySalonInfrastructure.Controllers
             if (id == null) return RedirectToAction("Employees", "Index");
 
             ViewBag.PositionsId = id;
-            ViewBag.PositionsName = name;
+            ViewBag.PositionName = name;
 
             var employeeByPosition = _context.Employees.Where(e => e.PositionsId == id).Include(e => e.Positions );
             return View(await employeeByPosition.ToListAsync());
@@ -65,26 +65,28 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name");
+            ViewBag.PositionsId = new SelectList(_context.Positions, "Id", "Name");
             return View();
         }
+
 
         // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,PositionsId,Id")] Employee employee)
+        public async Task<IActionResult> Create(int positionsId, [Bind("Name,PositionsId")] Employee employee)
         {
-            if (ModelState.IsValid)
-            {
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
-            return View(employee);
+                return RedirectToAction("Index", "Employees", new { id = positionsId , name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
+            
         }
+
+        
+
+
+
 
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -164,13 +166,18 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
-            if (employee != null)
-            {
-                _context.Employees.Remove(employee);
-            }
-
+            var positionsId = employee.PositionsId;
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Employess", new { id = positionsId }); // Redirect to the TypeService list page
+
+            //if (employee != null)
+            //{
+            //    _context.Employees.Remove(employee);
+            //}
+
+            //await _context.SaveChangesAsync();
+            //return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)

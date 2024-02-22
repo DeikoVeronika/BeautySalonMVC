@@ -61,12 +61,12 @@ namespace BeautySalonInfrastructure.Controllers
          // POST: Services/Create
          [HttpPost]
          [ValidateAntiForgeryToken]
-         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
-         {
-             _context.Add(service);
-             await _context.SaveChangesAsync();
-             return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
-         } 
+        public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
+        {
+            _context.Add(service);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
+        }
 
 
         // GET: Services/Edit/5
