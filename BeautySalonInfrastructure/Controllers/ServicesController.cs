@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeautySalonDomain.Model;
 using BeautySalonInfrastructure;
+using System.Diagnostics.Eventing.Reader;
 
 namespace BeautySalonInfrastructure.Controllers
 {
@@ -50,28 +51,24 @@ namespace BeautySalonInfrastructure.Controllers
             return View(service);
         }
 
-        // GET: Services/Create
-        public IActionResult Create()
-        {
-            ViewBag.TypeServiceId = new SelectList(_context.TypeServices, "Id", "Name");
-            return View();
-        }
+         // GET: Services/Create
+         public IActionResult Create()
+         {
+             ViewBag.TypeServiceId = new SelectList(_context.TypeServices, "Id", "Name");
+             return View();
+         }
 
-        // POST: Services/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Price,TypeServiceId,Id")] Service service)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(service);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Services", new { id = service.TypeServiceId, name = _context.TypeServices.Where(c => c.Id == service.TypeServiceId).FirstOrDefault().Name });
-            }
-            ViewBag.TypeServiceId = new SelectList(_context.TypeServices, "Id", "Name", service.TypeServiceId);
-            return View(service);
-        }
+         // POST: Services/Create
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
+         {
+             _context.Add(service);
+             await _context.SaveChangesAsync();
+             return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
+         } 
 
+        
 
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
