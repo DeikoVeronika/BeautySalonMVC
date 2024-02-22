@@ -83,10 +83,12 @@ namespace BeautySalonInfrastructure.Controllers
             
         }
 
+
+
+
+
+
         
-
-
-
 
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -117,28 +119,23 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
             }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
-            return View(employee);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EmployeeExists(employee.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction("Index", "Employees", new { id = employee.PositionsId });
         }
 
         // GET: Employees/Delete/5
