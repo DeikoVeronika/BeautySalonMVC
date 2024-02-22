@@ -150,12 +150,14 @@ namespace BeautySalonInfrastructure.Controllers
             var service = await _context.Services.FindAsync(id);
             if (service != null)
             {
+                var typeServiceId = service.TypeServiceId; // Get the category ID before deleting the service
                 _context.Services.Remove(service);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { id = typeServiceId }); // Redirect to the category page
             }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool ServiceExists(int id)
         {
