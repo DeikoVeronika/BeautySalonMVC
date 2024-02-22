@@ -68,8 +68,6 @@ namespace BeautySalonInfrastructure.Controllers
              return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
          } 
 
-        
-
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -116,10 +114,6 @@ namespace BeautySalonInfrastructure.Controllers
             return RedirectToAction("Index", "Services", new { id = service.TypeServiceId });
         }
 
-
-
-
-
         // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -154,7 +148,6 @@ namespace BeautySalonInfrastructure.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
 
         private bool ServiceExists(int id)
         {
