@@ -68,6 +68,7 @@ namespace BeautySalonInfrastructure.Controllers
              return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
          } 
 
+
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -139,14 +140,10 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var service = await _context.Services.FindAsync(id);
-            if (service != null)
-            {
-                var typeServiceId = service.TypeServiceId; // Get the category ID before deleting the service
-                _context.Services.Remove(service);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { id = typeServiceId }); // Redirect to the category page
-            }
-            return RedirectToAction(nameof(Index));
+            var typeServiceId = service.TypeServiceId; // Save the TypeServiceId before deleting the service
+            _context.Services.Remove(service);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Services", new { id = typeServiceId }); // Redirect to the TypeService list page
         }
 
         private bool ServiceExists(int id)
