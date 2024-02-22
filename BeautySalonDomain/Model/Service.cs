@@ -13,7 +13,7 @@ public partial class Service : Entity
     public string Description { get; set; } = null!;
 
     [Display(Name = "Ціна")]
-    public decimal Price { get; set; }
+    public int Price { get; set; }
 
     [Display(Name = "Категорія")]
     public int TypeServiceId { get; set; }
