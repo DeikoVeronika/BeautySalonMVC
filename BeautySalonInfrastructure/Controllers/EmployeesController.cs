@@ -32,18 +32,6 @@ namespace BeautySalonInfrastructure.Controllers
 
         }
 
-        /*public async Task<IActionResult> Index(int? id, string? name)
-        {
-            if (id == null) return RedirectToAction("Services", "Index");
-
-            ViewBag.TypeServiceId = id;
-            ViewBag.TypeServiceName = name;
-            var serviceByTypeService = _context.Services.Where(b => b.TypeServiceId == id).Include(b => b.TypeService);
-
-            return View(await serviceByTypeService.ToListAsync());
-        }*/
-
-        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -71,8 +59,7 @@ namespace BeautySalonInfrastructure.Controllers
 
 
         // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int positionsId, [Bind("Name,PositionsId")] Employee employee)
@@ -82,13 +69,6 @@ namespace BeautySalonInfrastructure.Controllers
                 return RedirectToAction("Index", "Employees", new { id = positionsId , name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
             
         }
-
-
-
-
-
-
-        
 
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -160,14 +140,18 @@ namespace BeautySalonInfrastructure.Controllers
         // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
-            var positionsId = employee.PositionsId;
+            var positionsId = employee.PositionsId; // Зберігаємо ID позиції перед видаленням
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Employess", new { id = positionsId }); // Redirect to the TypeService list page
+            return RedirectToAction("Index", "Employees", new { id = positionsId }); // Перенаправляємо до переліку працівників конкретної послуги
         }
+
+
+
 
         private bool EmployeeExists(int id)
         {
