@@ -1,23 +1,19 @@
 ﻿@model IEnumerable<BeautySalonDomain.Model.Employee>
 
-<h2>All Employees</h2>
+<h2>Всі працівники</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <!-- Додайте інші поля, які ви хочете відобразити -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Model)
+@{
+    var groupedEmployees = Model.GroupBy(e => e.Positions.Name).OrderBy(g => g.Key);
+}
+
+@foreach (var group in groupedEmployees)
+{
+    <h3>@group.Key</h3>
+
+    <ul>
+        @foreach (var employee in group.OrderBy(e => e.Name))
         {
-            <tr>
-                <td>@employee.Name</td>
-                <td>@employee.Positions.Name</td>
-                <!-- Додайте інші поля, які ви хочете відобразити -->
-            </tr>
+            <li>@employee.Name</li>
         }
-    </tbody>
-</table>
+    </ul>
+}
