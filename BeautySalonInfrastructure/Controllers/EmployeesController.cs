@@ -27,7 +27,7 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.PositionsId = id;
             ViewBag.PositionName = name;
 
-            var employeeByPosition = _context.Employees.Where(e => e.PositionsId == id).Include(e => e.Positions );
+            var employeeByPosition = _context.Employees.Where(e => e.PositionsId == id).Include(e => e.Positions);
             return View(await employeeByPosition.ToListAsync());
 
         }
@@ -47,7 +47,7 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            return View(employee);
+            return RedirectToAction("Index", "EmployeeServices", new { id = employee.Id, name = employee.Name });
         }
 
         // GET: Employees/Create
@@ -64,10 +64,10 @@ namespace BeautySalonInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int positionsId, [Bind("Name,PositionsId")] Employee employee)
         {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Employees", new { id = positionsId , name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
-            
+            _context.Add(employee);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Employees", new { id = positionsId, name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
+
         }
 
         // GET: Employees/Edit/5

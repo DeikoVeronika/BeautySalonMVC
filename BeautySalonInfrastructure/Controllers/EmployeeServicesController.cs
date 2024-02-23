@@ -20,10 +20,16 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // GET: EmployeeServices
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id, string? name)
         {
-            var dbbeautySalonContext = _context.EmployeeServices.Include(e => e.Employees);
-            return View(await dbbeautySalonContext.ToListAsync());
+            if (id == null) return RedirectToAction("Employees", "Index");
+
+            ViewBag.EmployeesId = id;
+            ViewBag.EmployeeName = name;
+
+            var employeeServiceByEmployee = _context.EmployeeServices.Where(b => b.EmployeesId == id).Include(b => b.Employees).Include(b => b.Services);
+
+            return View(await employeeServiceByEmployee.ToListAsync());
         }
 
         // GET: EmployeeServices/Details/5
