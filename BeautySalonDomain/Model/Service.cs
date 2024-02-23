@@ -10,7 +10,7 @@ public partial class Service : Entity
 
     [Required(ErrorMessage = "Введіть назву послуги")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "Назва послуги не може містити у собі менше двох символів")]
-    [Display(Name = "Послуга")]
+    [Display(Name = "Назва послуги")]
     public string Name
     {
         get => _name;

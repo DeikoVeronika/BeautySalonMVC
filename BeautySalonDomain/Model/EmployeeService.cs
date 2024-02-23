@@ -13,7 +13,12 @@ public partial class EmployeeService : Entity
     [Display(Name = "Працівник")]
     public int EmployeesId { get; set; }
 
+
+    [Display(Name = "Послуга")]
+
     public virtual Service Services { get; set; } = null!;
+
+    [Display(Name = "Працівник")]
 
     public virtual Employee Employees { get; set; } = null!;
 }

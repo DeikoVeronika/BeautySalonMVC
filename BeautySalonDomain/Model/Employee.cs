@@ -17,10 +17,12 @@ public partial class Employee : Entity
         get => _name;
         set => _name = value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
     }
-    [Display(Name = "Позиція")]
+    [Display(Name = "Посада")]
     public int PositionsId { get; set; }
 
     public virtual ICollection<EmployeeService> EmployeeServices { get; set; } = new List<EmployeeService>();
+
+    [Display(Name = "Посада")]
 
     public virtual Position Positions { get; set; } = null!;
 

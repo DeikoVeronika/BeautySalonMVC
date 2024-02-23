@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Послуги які надає @ViewBag.EmployeeName</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Додати нову послугу для працівника @ViewBag.EmployeeName</a>
 </p>
 <table class="table">
     <thead>
@@ -15,9 +15,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Services.Name)
             </th>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.Employees.Name)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -28,9 +28,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Services.Name)
                 </td>
-                <td>
+@*                 <td>
                     @Html.DisplayFor(modelItem => item.Employees.Name)
-                </td>
+                </td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |

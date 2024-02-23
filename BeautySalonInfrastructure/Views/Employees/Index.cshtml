@@ -15,9 +15,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+@*             <th>
                 @Html.DisplayNameFor(model => model.Positions)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -27,9 +27,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+@*             <td>
                 @Html.DisplayFor(modelItem => item.Positions.Name)
-            </td>
+            </td> *@
             <td>
                     <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
