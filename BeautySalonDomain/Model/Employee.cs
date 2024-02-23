@@ -6,6 +6,8 @@ namespace BeautySalonDomain.Model;
 
 public partial class Employee : Entity
 {
+    [Required(ErrorMessage = "Введіть Ім'я працівника")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Ім'я не може містити у собі менше двох символів")]
     [Display(Name = "Ім'я")]
     public string Name { get; set; } = null!;
 

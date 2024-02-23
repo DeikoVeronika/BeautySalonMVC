@@ -167,14 +167,6 @@ namespace BeautySalonInfrastructure.Controllers
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Employess", new { id = positionsId }); // Redirect to the TypeService list page
-
-            //if (employee != null)
-            //{
-            //    _context.Employees.Remove(employee);
-            //}
-
-            //await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
         }
 
         private bool EmployeeExists(int id)

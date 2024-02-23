@@ -64,6 +64,7 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
         {
             _context.Add(service);
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
         }
@@ -142,6 +143,7 @@ namespace BeautySalonInfrastructure.Controllers
             var service = await _context.Services.FindAsync(id);
             var typeServiceId = service.TypeServiceId; // Save the TypeServiceId before deleting the service
             _context.Services.Remove(service);
+
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Services", new { id = typeServiceId }); // Redirect to the TypeService list page
         }

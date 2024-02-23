@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Працівники @ViewBag.PositionName</h1>
+<h1>Працівники посади «@ViewBag.PositionName» </h1>
 
 <p>
     @Html.ActionLink("Додати нового працівника", "Create", new { positionsId = ViewBag.PositionsId })
