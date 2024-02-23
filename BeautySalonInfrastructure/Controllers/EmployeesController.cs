@@ -66,7 +66,7 @@ namespace BeautySalonInfrastructure.Controllers
         {
             _context.Add(employee);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Employees", new { id = positionsId, name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
+            return RedirectToAction("Details", "Positions", new { id = positionsId, name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
 
         }
 
@@ -115,7 +115,7 @@ namespace BeautySalonInfrastructure.Controllers
                     throw;
                 }
             }
-            return RedirectToAction("Index", "Employees", new { id = employee.PositionsId });
+            return RedirectToAction("Details", "Positions", new { id = employee.PositionsId });
         }
 
         // GET: Employees/Delete/5

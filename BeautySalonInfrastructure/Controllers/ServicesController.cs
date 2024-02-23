@@ -66,7 +66,7 @@ namespace BeautySalonInfrastructure.Controllers
             _context.Add(service);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Services", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
+            return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
         }
 
 
@@ -113,7 +113,7 @@ namespace BeautySalonInfrastructure.Controllers
                     throw;
                 }
             }
-            return RedirectToAction("Index", "Services", new { id = service.TypeServiceId });
+            return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
         }
 
         // GET: Services/Delete/5
