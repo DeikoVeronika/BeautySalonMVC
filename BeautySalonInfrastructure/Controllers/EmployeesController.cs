@@ -32,6 +32,12 @@ namespace BeautySalonInfrastructure.Controllers
 
         }
 
+        public async Task<IActionResult> AllEmployees()
+        {
+            var allEmployees = await _context.Employees.Include(e => e.Positions).ToListAsync();
+            return View(allEmployees);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

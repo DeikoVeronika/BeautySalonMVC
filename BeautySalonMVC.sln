@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalonDomain", "BeautySalonDomain\BeautySalonDomain.csproj", "{C861A7DD-2FC6-4573-A8AF-F5771097C13F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalonDomain", "BeautySalonDomain\BeautySalonDomain.csproj", "{C861A7DD-2FC6-4573-A8AF-F5771097C13F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BeautySalonInfrastructure", "BeautySalonInfrastructure\BeautySalonInfrastructure.csproj", "{22409456-48AA-4A46-99B3-43A3A75B656E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BeautySalonInfrastructure", "BeautySalonInfrastructure\BeautySalonInfrastructure.csproj", "{22409456-48AA-4A46-99B3-43A3A75B656E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
