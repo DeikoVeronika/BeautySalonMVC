@@ -89,14 +89,17 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
             ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name", employeeService.ServicesId); // Додаємо цей рядок
             return View(employeeService);
         }
+
 
         // POST: EmployeeServices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, [Bind("ServicesId,EmployeesId,Id")] EmployeeService employeeService)
         {
             if (id != employeeService.Id)
@@ -104,8 +107,6 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(employeeService);
@@ -122,10 +123,8 @@ namespace BeautySalonInfrastructure.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
-            return View(employeeService);
+
+            return RedirectToAction("Details", "Employees", new { id = employeeService.EmployeesId });
         }
 
         // GET: EmployeeServices/Delete/5

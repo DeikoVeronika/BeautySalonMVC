@@ -13,7 +13,11 @@
     <ul>
         @foreach (var employee in group.OrderBy(e => e.Name))
         {
-            <li>@employee.Name</li>
+            <li>
+                <a href="@Url.Action("Details", "Employees", new { id = employee.Id })" title="Натисність щоб переглянути детальну інформацію про працівника">
+                    @employee.Name
+                </a>
+            </li>
         }
     </ul>
 }
