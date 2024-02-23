@@ -145,7 +145,7 @@ namespace BeautySalonInfrastructure.Controllers
             _context.Services.Remove(service);
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Services", new { id = typeServiceId }); // Redirect to the TypeService list page
+            return RedirectToAction("Details", "TypeServices", new { id = typeServiceId });
         }
 
         private bool ServiceExists(int id)

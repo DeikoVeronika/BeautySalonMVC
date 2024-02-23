@@ -147,7 +147,7 @@ namespace BeautySalonInfrastructure.Controllers
             var positionsId = employee.PositionsId; // Зберігаємо ID позиції перед видаленням
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Employees", new { id = positionsId }); // Перенаправляємо до переліку працівників конкретної послуги
+            return RedirectToAction("Details", "Positions", new { id = positionsId }); // Перенаправляємо до переліку працівників конкретної послуги
         }
 
 
