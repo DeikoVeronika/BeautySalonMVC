@@ -4,9 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>EmployeeService</h4>
+<h1>Додати</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,12 +12,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ServicesId" class="control-label"></label>
-                <input asp-for="ServicesId" class="form-control" />
+                <select asp-for="ServicesId" class="form-control" asp-items="ViewBag.ServicesId as SelectList"></select> <!-- Змінюємо цей рядок -->
                 <span asp-validation-for="ServicesId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmployeesId" class="control-label"></label>
-                <select asp-for="EmployeesId" class ="form-control" asp-items="ViewBag.EmployeesId"></select>
+                <select asp-for="EmployeesId" class="form-control" asp-items="ViewBag.EmployeesId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -33,5 +31,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

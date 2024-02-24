@@ -55,25 +55,24 @@ namespace BeautySalonInfrastructure.Controllers
         public IActionResult Create()
         {
             ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name");
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name"); // Додаємо цей рядок
             return View();
         }
+
 
         // POST: EmployeeServices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServicesId,EmployeesId,Id")] EmployeeService employeeService)
+        public async Task<IActionResult> Create(int employeesId, [Bind("ServicesId,EmployeesId,Id")] EmployeeService employeeService)
         {
-            if (ModelState.IsValid)
-            {
+
                 _context.Add(employeeService);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EmployeesId"] = new SelectList(_context.Employees, "Id", "Name", employeeService.EmployeesId);
-            return View(employeeService);
+            return RedirectToAction("Details", "Employees", new { id =  employeesId, name = _context.Employees.Where(c => c.Id == employeesId).FirstOrDefault().Name });
         }
+
 
         // GET: EmployeeServices/Edit/5
         public async Task<IActionResult> Edit(int? id)
