@@ -58,12 +58,21 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Перевірка, чи існує вже служба з такою ж назвою
+                if (_context.TypeServices.Any(ts => ts.Name == typeService.Name))
+                {
+                    ModelState.AddModelError("Name", "Категорія з такою назвою вже існує");
+                    ViewBag.TypeServiceId = new SelectList(_context.TypeServices, "Id", "Name");
+                    return View(typeService);
+                }
+
                 _context.Add(typeService);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(typeService);
         }
+
 
 
         // GET: TypeServices/Edit/5
@@ -83,8 +92,6 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // POST: TypeServices/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Name,Id")] TypeService typeService)
@@ -96,6 +103,13 @@ namespace BeautySalonInfrastructure.Controllers
 
             if (ModelState.IsValid)
             {
+                // Перевірка, чи існує вже служба з такою ж назвою
+                if (_context.TypeServices.Any(ts => ts.Name == typeService.Name && ts.Id != typeService.Id))
+                {
+                    ModelState.AddModelError("Name", "Категорія з такою назвою вже існує");
+                    return View(typeService);
+                }
+
                 try
                 {
                     _context.Update(typeService);
@@ -116,6 +130,7 @@ namespace BeautySalonInfrastructure.Controllers
             }
             return View(typeService);
         }
+
 
         // GET: TypeServices/Delete/5
         public async Task<IActionResult> Delete(int? id)
