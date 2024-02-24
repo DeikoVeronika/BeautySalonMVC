@@ -42,14 +42,16 @@ namespace BeautySalonInfrastructure.Controllers
 
             var employeeService = await _context.EmployeeServices
                 .Include(e => e.Employees)
+                .Include(e => e.Services)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (employeeService == null)
             {
                 return NotFound();
             }
 
-            return View(employeeService);
+            return RedirectToAction("Details", "Services", new { id = employeeService.ServicesId, name = employeeService.Services.Name });
         }
+
 
         // GET: EmployeeServices/Create
         public IActionResult Create()
