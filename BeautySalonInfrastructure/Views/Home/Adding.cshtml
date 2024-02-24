@@ -1,0 +1,35 @@
+﻿@page
+@model BeautySalonInfrastructure.Views.Home.AddingModel
+@{
+}
+
+<h1>Сторінка управління</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Створення</th>
+            <th>Перейти на сторінку</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                
+                <a asp-controller="TypeServices" asp-action="Create" title="Створити нову категорію">Категорії</a><br>
+                <a asp-controller="Services" asp-action="Create" title="Створити нову послугу">Послуги</a><br>
+                <a asp-controller="Employees" asp-action="Create" title="Додати нового співробітника">Співробітника</a><br>
+                <a asp-controller="EmployeeServices" asp-action="Create" title="Додати послугу для співробітника"> Послуги для співробітника</a><br>
+                <a asp-controller="Positions" asp-action="Create" title="Створити нову посаду">Посади</a><br>
+                
+            </td>
+            <td>
+
+                <a asp-controller="TypeServices" asp-action="Index">Категорій</a><br>
+                <a asp-controller="Employees" asp-action="AllEmployees">Співробітників</a><br>
+                <a asp-controller="Positions" asp-action="Index">Посад</a><br>
+                
+            </td>
+        </tr>
+    </tbody>
+</table>
