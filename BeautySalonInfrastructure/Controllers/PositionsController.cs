@@ -59,12 +59,20 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Перевірка на унікальність імені
+                if (_context.Positions.Any(p => p.Name == position.Name))
+                {
+                    ModelState.AddModelError("Name", "Посада з таким ім'ям вже існує");
+                    return View(position);
+                }
+
                 _context.Add(position);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(position);
         }
+
 
         // GET: Positions/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -96,6 +104,13 @@ namespace BeautySalonInfrastructure.Controllers
 
             if (ModelState.IsValid)
             {
+                // Перевірка на унікальність імені
+                if (_context.Positions.Any(p => p.Name == position.Name && p.Id != position.Id))
+                {
+                    ModelState.AddModelError("Name", "Посада з таким ім'ям вже існує");
+                    return View(position);
+                }
+
                 try
                 {
                     _context.Update(position);
@@ -116,6 +131,7 @@ namespace BeautySalonInfrastructure.Controllers
             }
             return View(position);
         }
+
 
         // GET: Positions/Delete/5
         public async Task<IActionResult> Delete(int? id)
