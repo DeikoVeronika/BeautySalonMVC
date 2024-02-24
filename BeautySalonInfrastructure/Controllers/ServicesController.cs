@@ -51,15 +51,17 @@ namespace BeautySalonInfrastructure.Controllers
             return View(service);
         }
 
-         // GET: Services/Create
-         public IActionResult Create()
-         {
-             ViewBag.TypeServiceId = new SelectList(_context.TypeServices, "Id", "Name");
-             return View();
-         }
+        // GET: Services/Create
+        public IActionResult Create()
+        {
+            var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
+            ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name");
+            return View();
+        }
 
-         // POST: Services/Create
-         [HttpPost]
+
+        // POST: Services/Create
+        [HttpPost]
          [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
         {
