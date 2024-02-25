@@ -98,7 +98,9 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id != typeService.Id)
             {
-                return NotFound();
+                //return NotFound();
+                return RedirectToAction(nameof(Index));
+
             }
 
             if (ModelState.IsValid)
@@ -119,7 +121,9 @@ namespace BeautySalonInfrastructure.Controllers
                 {
                     if (!TypeServiceExists(typeService.Id))
                     {
-                        return NotFound();
+                        //return NotFound();
+                        return RedirectToAction(nameof(Index));
+
                     }
                     else
                     {
@@ -137,14 +141,15 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             var typeService = await _context.TypeServices
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (typeService == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             return View(typeService);
