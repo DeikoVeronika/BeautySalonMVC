@@ -57,11 +57,12 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // GET: Employees/Create
-        public IActionResult Create()
+        public IActionResult Create(int? positionsId)
         {
-            ViewBag.PositionsId = new SelectList(_context.Positions, "Id", "Name");
+            ViewBag.PositionsId = new SelectList(_context.Positions, "Id", "Name", positionsId);
             return View();
         }
+
 
 
         // POST: Employees/Create

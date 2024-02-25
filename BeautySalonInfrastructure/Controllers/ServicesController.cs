@@ -52,12 +52,14 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // GET: Services/Create
-        public IActionResult Create()
+        // GET: Services/Create
+        public IActionResult Create(int? typeServiceId)
         {
             var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
-            ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name");
+            ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name", typeServiceId);
             return View();
         }
+
 
 
         // POST: Services/Create
