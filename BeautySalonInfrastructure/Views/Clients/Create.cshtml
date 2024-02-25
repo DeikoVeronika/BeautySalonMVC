@@ -21,13 +21,13 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
                 <div class="form-group">
-                    <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" placeholder="+380501234578" />
+                 <label asp-for="Phone" class="control-label"></label>
+                <input id="phoneInput" asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
             <div class="form-group">
                 <label asp-for="Birthday" class="control-label"></label>
-                <input asp-for="Birthday" class="form-control" placeholder="ДД.ММ.РРРР" />
+                <input asp-for="Birthday" class="form-control" placeholder="DD.MM.YYYY" />
                 <span asp-validation-for="Birthday" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,4 +48,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="/js/site.js"></script>
+    <script src="/js/phoneInput.js"></script>
+
+
 }
