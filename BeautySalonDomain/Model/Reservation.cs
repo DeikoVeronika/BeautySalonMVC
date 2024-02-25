@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeautySalonDomain.Model;
 
-public partial class Reservation : Entity
+public partial class Reservation : Entity 
 {
 
     [Display(Name = "Клієнт")]
