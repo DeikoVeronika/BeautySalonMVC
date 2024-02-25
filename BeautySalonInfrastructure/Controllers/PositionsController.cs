@@ -22,7 +22,7 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Positions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Positions.ToListAsync());
+            return View(await _context.Positions.OrderBy(p => p.Name).ToListAsync());
         }
 
         // GET: Positions/Details/5

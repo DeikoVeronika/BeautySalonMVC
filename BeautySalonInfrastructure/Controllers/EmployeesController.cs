@@ -19,7 +19,7 @@ namespace BeautySalonInfrastructure.Controllers
             _context = context;
         }
 
-        // GET: Employees
+   //     GET: Employees
         public async Task<IActionResult> Index(int? id, string? name)
         {
             if (id == null) return RedirectToAction("Employees", "Index");
@@ -31,6 +31,18 @@ namespace BeautySalonInfrastructure.Controllers
             return View(await employeeByPosition.ToListAsync());
 
         }
+
+        //public async task<iactionresult> Index(int? id, string? name)
+        //{
+        //    if (id == null) return RedirectToAction("Employees", "Index");
+
+        // ViewBag.PositionsId = id;
+        //    ViewBag.PositionName = name;
+
+        //    var employeeByPosition = _context.Employees.where(e => e.PositionsId == id).orderby(e => e.name).include(e => e.Positions);
+        //    return view(await employeeByPosition.tolistasync());
+        //}
+
 
         public async Task<IActionResult> AllEmployees()
         {
@@ -59,14 +71,11 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Employees/Create
         public IActionResult Create(int? positionsId)
         {
-            ViewBag.PositionsId = new SelectList(_context.Positions, "Id", "Name", positionsId);
+            ViewBag.PositionsId = new SelectList(_context.Positions.OrderBy(p => p.Name), "Id", "Name", positionsId);
             return View();
         }
 
-
-
         // POST: Employees/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int positionsId, [Bind("Name,PositionsId")] Employee employee)
@@ -74,8 +83,8 @@ namespace BeautySalonInfrastructure.Controllers
             _context.Add(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "Positions", new { id = positionsId, name = _context.Positions.Where(e => e.Id == positionsId).FirstOrDefault().Name });
-
         }
+
 
         // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -90,7 +99,7 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 return NotFound();
             }
-            ViewData["PositionsId"] = new SelectList(_context.Positions, "Id", "Name", employee.PositionsId);
+            ViewData["PositionsId"] = new SelectList(_context.Positions.OrderBy(p => p.Name), "Id", "Name", employee.PositionsId);
             return View(employee);
         }
 
