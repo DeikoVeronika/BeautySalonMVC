@@ -9,7 +9,7 @@ public partial class Employee : Entity
     private string _name;
 
 
-    [Required(ErrorMessage = "Введіть Ім'я працівника")]
+    [Required(ErrorMessage = "Введіть ім'я працівника")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "Ім'я не може містити у собі менше двох символів")]
     [Display(Name = "Ім'я")]
     public string Name

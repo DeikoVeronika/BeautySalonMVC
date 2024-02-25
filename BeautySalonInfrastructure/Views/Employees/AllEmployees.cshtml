@@ -3,6 +3,7 @@
 <h2>Всі працівники</h2>
 
 @{
+    ViewData["Title"] = "Працівники";
     var groupedEmployees = Model.GroupBy(e => e.Positions.Name).OrderBy(g => g.Key);
 }
 
