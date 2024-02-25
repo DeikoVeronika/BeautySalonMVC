@@ -22,8 +22,10 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Clients
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            var clients = await _context.Clients.OrderBy(c => c.LastName).ThenBy(c => c.FirstName).ToListAsync();
+            return View(clients);
         }
+
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -116,7 +116,7 @@ namespace BeautySalonInfrastructure.Controllers
                 {
                     _context.Update(typeService);
                     await _context.SaveChangesAsync();
-                }
+                }   
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!TypeServiceExists(typeService.Id))

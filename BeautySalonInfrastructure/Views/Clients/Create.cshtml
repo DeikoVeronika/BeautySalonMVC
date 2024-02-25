@@ -47,7 +47,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="/js/site.js"></script>
     <script src="/js/phoneInput.js"></script>
 

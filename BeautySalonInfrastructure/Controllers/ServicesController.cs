@@ -125,7 +125,7 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "TypeServices");
             }
 
             var service = await _context.Services
@@ -133,7 +133,7 @@ namespace BeautySalonInfrastructure.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (service == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "TypeServices");
             }
 
             return View(service);
