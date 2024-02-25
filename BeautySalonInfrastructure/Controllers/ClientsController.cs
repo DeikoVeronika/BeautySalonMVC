@@ -56,12 +56,21 @@ namespace BeautySalonInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FirstName,LastName,Phone,Birthday,Email,Id")] Client client)
         {
+            // Ensure the phone number has the correct format
+            const string defaultPrefix = "+380";
+            if (client.Phone == null || !client.Phone.StartsWith(defaultPrefix) || client.Phone.Length != 13)
+            {
+                ModelState.AddModelError("Phone", "Неправильний формат мобільного номеру");
+            }
+
+            // Validate other model properties
             if (ModelState.IsValid)
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(client);
         }
 
@@ -91,6 +100,12 @@ namespace BeautySalonInfrastructure.Controllers
             if (id != client.Id)
             {
                 return NotFound();
+            }
+
+            const string defaultPrefix = "+380";
+            if (client.Phone == null || !client.Phone.StartsWith(defaultPrefix) || client.Phone.Length != 13)
+            {
+                ModelState.AddModelError("Phone", "Неправильний формат мобільного номеру");
             }
 
             if (ModelState.IsValid)
