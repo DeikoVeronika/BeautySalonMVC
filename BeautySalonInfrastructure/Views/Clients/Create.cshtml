@@ -35,16 +35,14 @@
                 <input asp-for="Email" class="form-control" placeholder="tarasshevchenko@gmail.com" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Створити" class="btn btn-primary" />
+            <div class="create-or-back">
+                <input class="btn btn-outline-primary" type="submit" value="Створити" />
+                <a class="btn" asp-action="Index">Назад</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Назад</a>
-</div>
 
 @section Scripts {
     @{
