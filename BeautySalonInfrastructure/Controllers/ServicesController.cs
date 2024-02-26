@@ -92,6 +92,18 @@ namespace BeautySalonInfrastructure.Controllers
             return Json(service);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetTypeService(int serviceId)
+        {
+            var service = await _context.Services
+              .Where(s => s.Id == serviceId)
+             .FirstOrDefaultAsync();
+
+            return Json(service);
+        }
+
+
+
 
 
         // GET: Services/Edit/5
