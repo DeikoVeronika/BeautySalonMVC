@@ -12,21 +12,42 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ClientsId" class="control-label"></label>
-                <select asp-for="ClientsId" class ="form-control" asp-items="ViewBag.ClientsId"></select>
+                <label asp-for="Clients.FirstName" class="control-label"></label>
+                <input asp-for="Clients.FirstName" class="form-control" />
+                <span asp-validation-for="Clients.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ServicesId" class="control-label"></label>
-                <select asp-for="ServicesId" class ="form-control" asp-items="ViewBag.ServicesId"></select>
+                <label asp-for="Clients.LastName" class="control-label"></label>
+                <input asp-for="Clients.LastName" class="form-control" />
+                <span asp-validation-for="Clients.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SchedulesId" class="control-label"></label>
-                <select asp-for="SchedulesId" class ="form-control" asp-items="ViewBag.SchedulesId"></select>
+                <label asp-for="Clients.Phone" class="control-label"></label>
+                <input asp-for="Clients.Phone" class="form-control" />
+                <span asp-validation-for="Clients.Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Info" class="control-label"></label>
-                <input asp-for="Info" class="form-control" />
-                <span asp-validation-for="Info" class="text-danger"></span>
+                <label asp-for="TypeServices.Name" class="control-label"></label>
+                <select asp-for="TypeServices.Name" class="form-control" asp-items="ViewBag.Name"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Services.Name" class="control-label"></label>
+                <select asp-for="Services.Name" class="form-control" asp-items="ViewBag.Name"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Schedules.EmployeesId" class="control-label"></label>
+                <select asp-for="Schedules.EmployeesId" class="form-control" asp-items="ViewBag.EmployeesId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Schedules.Date" class="control-label"></label>
+                <select asp-for="Schedules.Date" class="form-control" asp-items="ViewBag.Date"></select>
+                <span asp-validation-for="Schedules.Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Schedules.StartTime" class="control-label"></label>
+                <select asp-for="Schedules.StartTime" class="form-control" asp-items="ViewBag.StartTime"></select>
+                <span asp-validation-for="Schedules.StartTime" class="text-danger"></span>
             </div>
             <div class="create-or-back">
                 <input class="btn btn-outline-primary" type="submit" value="Створити" />
@@ -34,6 +55,7 @@
             </div>
         </form>
     </div>
+
 </div>
 
 
