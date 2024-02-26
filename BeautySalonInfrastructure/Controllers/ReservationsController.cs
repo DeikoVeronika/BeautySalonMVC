@@ -50,13 +50,13 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewData["Clients.FirstName"] = new SelectList(_context.Clients, "Id", "FirstName");
-            ViewData["Clients.LastName"] = new SelectList(_context.Clients, "Id", "LastName");
-            ViewData["Clients.Phone"] = new SelectList(_context.Clients, "Id", "Phone");
-            ViewData["Schedules.Date"] = new SelectList(_context.Schedules, "Id", "Date");
-            ViewData["Schedules.StartTime"] = new SelectList(_context.Schedules, "Id", "StartTime");
-            ViewData["TypeServices.Name"] = new SelectList(_context.Services, "Id", "Name");
-            ViewData["Service.Name"] = new SelectList(_context.Services, "Id", "Name");
+            ViewBag.ClientsFirstName = new SelectList(_context.Clients, "Id", "FirstName");
+            ViewBag.ClientsLastName = new SelectList(_context.Clients, "Id", "LastName");
+            ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone");
+            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
+            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
+            ViewBag.TypeServicesName = new SelectList(_context.Services, "Id", "Name");
+            ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name");
             return View();
         }
 
@@ -70,15 +70,16 @@ namespace BeautySalonInfrastructure.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Clients.FirstName"] = new SelectList(_context.Clients, "Id", "FirstName", reservation.Clients.FirstName);
-            ViewData["Clients.LastName"] = new SelectList(_context.Clients, "Id", "LastName", reservation.Clients.LastName);
-            ViewData["Clients.Phone"] = new SelectList(_context.Clients, "Id", "Phone", reservation.Clients.Phone);
-            ViewData["Schedules.Date"] = new SelectList(_context.Schedules, "Id", "Date", reservation.Schedules.Date);
-            ViewData["Schedules.StartTime"] = new SelectList(_context.Schedules, "Id", "StartTime", reservation.Schedules.StartTime);
-            ViewData["TypeServices.Name"] = new SelectList(_context.Services, "Id", "Name", reservation.TypeServices.Name);
-            ViewData["Services.Name"] = new SelectList(_context.Services, "Id", "Name", reservation.Services.Name);
+            ViewBag.ClientsFirstName = new SelectList(_context.Clients, "Id", "FirstName", reservation.Clients.FirstName);
+            ViewBag.ClientsLastName = new SelectList(_context.Clients, "Id", "LastName", reservation.Clients.LastName);
+            ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone", reservation.Clients.Phone);
+            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", reservation.Schedules.Date);
+            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", reservation.Schedules.StartTime);
+            ViewBag.TypeServicesName = new SelectList(_context.Services, "Id", "Name", reservation.TypeServices.Name);
+            ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name", reservation.Services.Name);
             return View(reservation);
         }
+
 
 
 
