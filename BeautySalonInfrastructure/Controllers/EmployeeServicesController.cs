@@ -76,6 +76,18 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
 
+        [HttpGet]
+        public IActionResult GetEmployees(int serviceId)
+        {
+            var employees = _context.EmployeeServices
+                .Where(es => es.ServicesId == serviceId)
+                .Select(es => new { id = es.EmployeesId, name = es.Employees.Name })
+                .ToList();
+
+            return Json(employees);
+        }
+
+
         // GET: EmployeeServices/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

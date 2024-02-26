@@ -60,5 +60,31 @@ $(document).ready(function () {
                 console.log(textStatus, errorThrown);
             }
         });
+
+        $.ajax({
+            url: '/EmployeeServices/GetEmployees',
+            type: 'GET',
+            data: { serviceId: selectedService },
+            success: function (data) {
+                data.sort(function (a, b) {
+                    return a.name.localeCompare(b.name);
+                });
+
+                var employeeSelect = $('#EmployeeServices_EmployeesId');
+                employeeSelect.empty();
+
+                $.each(data, function (index, employee) {
+                    employeeSelect.append($('<option/>', {
+                        value: employee.id,
+                        text: employee.name
+                    }));
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+
     });
+
 });
