@@ -23,11 +23,15 @@ public partial class Reservation : Entity
     public int TypeServicesId { get; set; }
 
 
+    public int EmployeeServicesId { get; set; }
+
+
     public virtual Client Clients { get; set; } = null!;
 
     public virtual Schedule Schedules { get; set; } = null!;
 
     public virtual Service Services { get; set; } = null!;
     public virtual TypeService TypeServices { get; set; } = null!;
+    public virtual EmployeeService EmployeeServices { get; set; } = null!;
 
 }

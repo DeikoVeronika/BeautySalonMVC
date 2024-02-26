@@ -21,4 +21,9 @@ public partial class EmployeeService : Entity
     [Display(Name = "Працівник")]
 
     public virtual Employee Employees { get; set; } = null!;
+
+
+
+    public virtual ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+
 }

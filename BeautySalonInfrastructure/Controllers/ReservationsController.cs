@@ -58,12 +58,14 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name");
             ViewBag.ServiceName = new SelectList(_context.Services.OrderBy(s => s.Name), "Id", "Name");
             ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description");
+            ViewBag.EmployeeServicesEmployeesId = new SelectList(_context.EmployeeServices.Include(es => es.Employees), "Id", "Employees.Name");
+
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Clients.FirstName,Clients.LastName,Clients.Phone,Schedules.Date,Schedules.StartTime,TypeServices.Name,Services.Name,Services.Description,Id")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Clients.FirstName,Clients.LastName,Clients.Phone,Schedules.Date,Schedules.StartTime,TypeServices.Name,Services.Name,Services.Description,EmployeeServices.EmployeesId,Id")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -79,6 +81,8 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name", reservation.TypeServices.Name);
             ViewBag.ServiceName = new SelectList(_context.Services.OrderBy(s => s.Name), "Id", "Name", reservation.Services.Name);
             ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description", reservation.Services.Description);
+            ViewBag.EmployeeServicesEmployeesId = new SelectList(_context.EmployeeServices, "Id", "Employees.Name", reservation.EmployeeServices.EmployeesId);
+
             return View(reservation);
         }
 
