@@ -57,12 +57,13 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
             ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name");
             ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name");
+            ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Clients.FirstName,Clients.LastName,Clients.Phone,Schedules.Date,Schedules.StartTime,TypeServices.Name,Services.Name,Id")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Clients.FirstName,Clients.LastName,Clients.Phone,Schedules.Date,Schedules.StartTime,TypeServices.Name,Services.Name,Services.Description,Id")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -77,8 +78,10 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", reservation.Schedules.StartTime);
             ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name", reservation.TypeServices.Name);
             ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name", reservation.Services.Name);
+            ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description", reservation.Services.Description);
             return View(reservation);
         }
+
 
 
 

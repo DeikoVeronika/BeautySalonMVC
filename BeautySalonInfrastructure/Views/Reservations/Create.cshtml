@@ -35,6 +35,13 @@
                 <label asp-for="Services.Name" class="control-label"></label>
                 <select asp-for="Services.Name" class="form-control" asp-items="ViewBag.ServiceName"></select>
             </div>
+            <div class="form-group">
+                <label asp-for="Services.Description" class="control-label"></label>
+                <textarea id="Services_Description" asp-for="Services.Description" class="form-control" style="resize: none;" disabled></textarea>
+            </div>
+
+
+
             <hr />
             <div class="form-group">
                 <label asp-for="Schedules.Date" class="control-label"></label>
