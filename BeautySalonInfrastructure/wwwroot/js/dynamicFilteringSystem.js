@@ -32,23 +32,33 @@ $(document).ready(function () {
     $("#Services_Name").change(function () {
         var selectedService = $(this).val();
 
-        $("#Services_Name").change(function () {
-            var selectedService = $(this).val();
+        $.ajax({
+            url: '/Services/GetServiceDescription',
+            type: 'GET',
+            data: { serviceId: selectedService },
+            success: function (data) {
+                var descriptionInput = $('#Services_Description');
+                descriptionInput.val(data.description);
+                descriptionInput.css('height', 'auto'); // reset the height
+                descriptionInput.height(descriptionInput.prop('scrollHeight'));
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
 
-            $.ajax({
-                url: '/Services/GetServiceDescription',
-                type: 'GET',
-                data: { serviceId: selectedService },
-                success: function (data) {
-                    var descriptionInput = $('#Services_Description');
-                    descriptionInput.val(data.description);
-                    descriptionInput.css('height', 'auto'); // reset the height
-                    descriptionInput.height(descriptionInput.prop('scrollHeight'));
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(textStatus, errorThrown);
-                }
-            });
+        $.ajax({
+            url: '/Services/GetTypeService',
+            type: 'GET',
+            data: { serviceId: selectedService },
+            success: function (data) {
+                console.log(data); // Added this line to log the returned data
+                var typeServiceSelect = $('#TypeServices_Name');
+                typeServiceSelect.val(data.typeServiceId);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
         });
     });
 });
