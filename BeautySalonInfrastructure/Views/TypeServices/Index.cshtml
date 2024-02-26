@@ -6,16 +6,13 @@
 
 <h1>Категорії</h1>
 
-<p>
-    <a class="btn btn-outline-primary" asp-action="Create">Створити нову категорію</a>
-</p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-titles">
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th><a class="btn btn-outline-primary" asp-action="Create">Створити нову категорію</a></th>
         </tr>
     </thead>
     <tbody>

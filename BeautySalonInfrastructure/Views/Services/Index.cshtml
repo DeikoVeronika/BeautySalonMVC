@@ -6,25 +6,24 @@
 
 <h1>Послуги доступні у категорії «@ViewBag.TypeServiceName»</h1>
 
-<p>
-    @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId }, new { @class = "btn btn-outline-primary" })
-</p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-titles">
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
+            </th >
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.TypeService)
             </th>
-            <th></th>
+            <th>
+                @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId }, new { @class = "btn btn-outline-primary" })
+            </th>
         </tr>
     </thead>
     <tbody>

@@ -6,28 +6,25 @@
 
 <h1>Клієнти</h1>
 
-<p>
-    <a class ="btn btn-outline-primary" asp-action="Create">Створити нового клієнта</a>
-</p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-titles">
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Birthday)
             </th>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th></th>
+            <th><a class="btn btn-outline-primary" asp-action="Create">Створити нового клієнта</a></th>
         </tr>
     </thead>
     <tbody>

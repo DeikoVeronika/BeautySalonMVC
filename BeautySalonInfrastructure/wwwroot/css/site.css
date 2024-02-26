@@ -26,14 +26,37 @@ body {
     margin-bottom: 60px;
 }
 
-a {
-    text-decoration: none;
-
+.table-name {
+    font-weight: 800;
+    font-size: 16px;
 }
 
+.table-titles th {
+    vertical-align: middle;
+}
+
+a {
+    text-decoration: none;
+}
 a:hover {
     text-decoration: underline;
 }
+
+a.navbar-brand {
+    font-weight: 900;
+}
+
+a.navbar-brand:hover {
+    text-decoration: none;
+}
+
+
+a.nav-link.text-dark {
+    font-weight: 600;
+}
+
+
+
 .btn.btn-outline-primary:hover {
     text-decoration: none;
 }
@@ -41,3 +64,10 @@ a:hover {
 div.create-or-back {
     margin-top: 15px;
 }
+
+div.edit-or-back {
+    margin-top: 15px;
+}
+
+
+

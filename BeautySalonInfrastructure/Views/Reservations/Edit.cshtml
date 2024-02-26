@@ -31,16 +31,14 @@
                 <span asp-validation-for="Info" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <input type="submit" value="Зберегти" class="btn btn-primary" />
+            <div class="edit-or-back">
+                <input type="submit" value="Зберегти" class="btn btn-outline-primary" />
+                <a class="btn" asp-action="Index">Відмінити</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Відмінити</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

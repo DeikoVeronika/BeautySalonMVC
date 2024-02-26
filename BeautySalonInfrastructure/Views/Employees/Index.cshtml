@@ -6,16 +6,15 @@
 
 <h1>Працівники посади «@ViewBag.PositionName» </h1>
 
-<p>
-    @Html.ActionLink("Додати нового працівника", "Create", new { positionsId = ViewBag.PositionsId }, new { @class = "btn btn-outline-primary" })  
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="table-name">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th></th>
+            <th>
+                @Html.ActionLink("Додати нового працівника", "Create", new { positionsId = ViewBag.PositionsId }, new { @class = "btn btn-outline-primary" })
+            </th>
         </tr>
     </thead>
     <tbody>
