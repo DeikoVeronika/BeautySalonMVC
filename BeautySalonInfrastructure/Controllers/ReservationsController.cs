@@ -50,9 +50,9 @@ namespace BeautySalonInfrastructure.Controllers
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "Email");
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "LastName");
             ViewData["SchedulesId"] = new SelectList(_context.Schedules, "Id", "Id");
-            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Description");
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name");
             return View();
         }
 
@@ -69,9 +69,9 @@ namespace BeautySalonInfrastructure.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "Email", reservation.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "LastName", reservation.ClientsId);
             ViewData["SchedulesId"] = new SelectList(_context.Schedules, "Id", "Id", reservation.SchedulesId);
-            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Description", reservation.ServicesId);
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name", reservation.ServicesId);
             return View(reservation);
         }
 
@@ -88,9 +88,9 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "Email", reservation.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "LastName", reservation.ClientsId);
             ViewData["SchedulesId"] = new SelectList(_context.Schedules, "Id", "Id", reservation.SchedulesId);
-            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Description", reservation.ServicesId);
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name", reservation.ServicesId);
             return View(reservation);
         }
 
@@ -126,9 +126,9 @@ namespace BeautySalonInfrastructure.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "Email", reservation.ClientsId);
+            ViewData["ClientsId"] = new SelectList(_context.Clients, "Id", "LastName", reservation.ClientsId);
             ViewData["SchedulesId"] = new SelectList(_context.Schedules, "Id", "Id", reservation.SchedulesId);
-            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Description", reservation.ServicesId);
+            ViewData["ServicesId"] = new SelectList(_context.Services, "Id", "Name", reservation.ServicesId);
             return View(reservation);
         }
 
