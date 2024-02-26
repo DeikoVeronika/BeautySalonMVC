@@ -7,7 +7,7 @@
 <h1>Працівники посади «@ViewBag.PositionName» </h1>
 
 <p>
-    @Html.ActionLink("Додати нового працівника", "Create", new { positionsId = ViewBag.PositionsId })
+    @Html.ActionLink("Додати нового працівника", "Create", new { positionsId = ViewBag.PositionsId }, new { @class = "btn btn-outline-primary" })  
 </p>
 <table class="table">
     <thead>

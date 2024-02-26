@@ -21,3 +21,17 @@ body {
   margin-bottom: 60px;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.btn.btn-outline-primary:hover {
+    text-decoration: none;
+}
+
+td {
+    font-weight:400;
+}

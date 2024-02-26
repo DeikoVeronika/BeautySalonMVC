@@ -7,7 +7,7 @@
 <h1>Послуги доступні у категорії «@ViewBag.TypeServiceName»</h1>
 
 <p>
-    @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId })
+    @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId }, new { @class = "btn btn-outline-primary" })
 </p>
 <table class="table">
     <thead>
