@@ -55,7 +55,7 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone");
             ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
-            ViewBag.TypeServicesName = new SelectList(_context.Services, "Id", "Name");
+            ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name");
             ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name");
             return View();
         }
@@ -75,7 +75,7 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone", reservation.Clients.Phone);
             ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", reservation.Schedules.Date);
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", reservation.Schedules.StartTime);
-            ViewBag.TypeServicesName = new SelectList(_context.Services, "Id", "Name", reservation.TypeServices.Name);
+            ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name", reservation.TypeServices.Name);
             ViewBag.ServiceName = new SelectList(_context.Services, "Id", "Name", reservation.Services.Name);
             return View(reservation);
         }

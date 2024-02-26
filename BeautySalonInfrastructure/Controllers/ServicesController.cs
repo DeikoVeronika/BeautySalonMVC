@@ -52,7 +52,6 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // GET: Services/Create
-        // GET: Services/Create
         public IActionResult Create(int? typeServiceId)
         {
             var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
@@ -73,6 +72,16 @@ namespace BeautySalonInfrastructure.Controllers
             return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetServices(int typeServiceId)
+        {
+            var services = await _context.Services
+                .Where(s => s.TypeServiceId == typeServiceId)
+                .ToListAsync();
+
+            return Json(services);
+        }
+
 
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -90,6 +99,9 @@ namespace BeautySalonInfrastructure.Controllers
             ViewData["TypeServiceId"] = new SelectList(_context.TypeServices, "Id", "Name", service.TypeServiceId);
             return View(service);
         }
+
+
+
 
         // POST: Services/Edit/5
         [HttpPost]
