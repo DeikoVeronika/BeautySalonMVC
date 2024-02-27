@@ -115,7 +115,7 @@ public partial class DbbeautySalonContext : DbContext
 
             entity.HasOne(d => d.TypeService).WithMany(p => p.Services)
                 .HasForeignKey(d => d.TypeServiceId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade) // Changed to Cascade
                 .HasConstraintName("FK_Services_TypeServices");
         });
 
@@ -126,6 +126,7 @@ public partial class DbbeautySalonContext : DbContext
 
         OnModelCreatingPartial(modelBuilder);
     }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

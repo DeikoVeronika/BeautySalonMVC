@@ -141,33 +141,55 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id == null)
             {
-                //return NotFound();
                 return RedirectToAction(nameof(Index));
             }
 
             var typeService = await _context.TypeServices
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (typeService == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(typeService);
+            return View(nameof(Delete), typeService);
         }
 
-        // POST: TypeServices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, bool confirmed = false)
         {
             var typeService = await _context.TypeServices.FindAsync(id);
-            if (typeService != null)
+
+            if (typeService == null)
             {
-                _context.TypeServices.Remove(typeService);
+                return RedirectToAction(nameof(Index));
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (!confirmed)
+            {
+                // Перевірка наявності асоційованих послуг
+                var associatedServices = _context.Services.Where(s => s.TypeServiceId == id).ToList();
+                if (associatedServices.Count > 0)
+                {
+                    return View("ConfirmDelete", typeService);
+                }
+            }
+
+            try
+            {
+                var associatedServices = _context.Services.Where(s => s.TypeServiceId == id);
+                _context.Services.RemoveRange(associatedServices);
+
+                _context.TypeServices.Remove(typeService);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                ModelState.AddModelError("", "Неможливо видалити категорію. Спробуйте ще раз.");
+                return View(nameof(Delete), typeService);
+            }
         }
 
         private bool TypeServiceExists(int id)
