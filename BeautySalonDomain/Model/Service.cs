@@ -18,7 +18,7 @@ public partial class Service : Entity
     }
 
     [Display(Name = "Опис")]
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
 
     [Required(ErrorMessage = "Укажіть ціну послуги")]
     [Display(Name = "Ціна")]

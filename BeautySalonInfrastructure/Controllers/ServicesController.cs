@@ -68,6 +68,7 @@ namespace BeautySalonInfrastructure.Controllers
         {
             _context.Add(service);
 
+            
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
         }
@@ -111,13 +112,13 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
 
             var service = await _context.Services.FindAsync(id);
             if (service == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
             ViewData["TypeServiceId"] = new SelectList(_context.TypeServices.OrderBy(p => p.Name), "Id", "Name", service.TypeServiceId);
             return View(service);
@@ -131,7 +132,7 @@ namespace BeautySalonInfrastructure.Controllers
         {
             if (id != service.Id)
             {
-                return NotFound();
+                return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
             }
 
             try
@@ -143,7 +144,7 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 if (!ServiceExists(service.Id))
                 {
-                    return NotFound();
+                    return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
                 }
                 else
                 {
