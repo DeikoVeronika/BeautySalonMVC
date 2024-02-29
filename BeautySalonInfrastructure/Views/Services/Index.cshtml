@@ -18,9 +18,9 @@
             <th class="table-name">
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th class="table-name">
+@*             <th class="table-name">
                 @Html.DisplayNameFor(model => model.TypeService)
-            </th>
+            </th> *@
             <th>
                 @Html.ActionLink("Додати нову послугу", "Create", new { typeServiceId = ViewBag.TypeServiceId }, new { @class = "btn btn-outline-primary" })
             </th>
@@ -39,9 +39,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
-                <td>
+@*                 <td>
                     @Html.DisplayFor(modelItem => item.TypeService.Name)
-                </td>
+                </td> *@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |

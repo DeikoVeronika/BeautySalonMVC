@@ -69,5 +69,8 @@ div.edit-or-back {
     margin-top: 15px;
 }
 
+dt.col-sm-2, label.control-label {
+    color: #000;
+}
 
 

@@ -26,12 +26,19 @@ public partial class Reservation : Entity
     public int EmployeeServicesId { get; set; }
 
 
+    [Display(Name = "Клієнт")]
     public virtual Client Clients { get; set; } = null!;
 
+    [Display(Name = "Графік")]
     public virtual Schedule Schedules { get; set; } = null!;
 
+    [Display(Name = "Послуга")]
     public virtual Service Services { get; set; } = null!;
-    public virtual TypeService TypeServices { get; set; } = null!;
+
+    [Display(Name = "Категорія")]
+    public virtual TypeService TypeServices { get; set; } = null!; 
+    
+    [Display(Name = "Працівник")]
     public virtual EmployeeService EmployeeServices { get; set; } = null!;
 
 }
