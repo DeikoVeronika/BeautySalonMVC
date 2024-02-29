@@ -66,12 +66,17 @@ namespace BeautySalonInfrastructure.Controllers
          [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
         {
+            // Заповніть ViewBag.TypeServices перед поверненням перегляду
+            ViewBag.TypeServices = new SelectList(_context.TypeServices, "Id", "Name");
+
             _context.Add(service);
 
-            
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
         }
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetServices(int typeServiceId)
