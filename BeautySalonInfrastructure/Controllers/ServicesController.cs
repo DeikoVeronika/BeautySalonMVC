@@ -125,9 +125,13 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeServiceId"] = new SelectList(_context.TypeServices.OrderBy(p => p.Name), "Id", "Name", service.TypeServiceId);
+
+            var typeServices = _context.TypeServices.OrderBy(p => p.Name);
+            ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
+
             return View(service);
         }
+
 
 
         // POST: Services/Edit/5
