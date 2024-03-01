@@ -118,7 +118,6 @@ namespace BeautySalonInfrastructure.Controllers
 
 
 
-        // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -132,13 +131,12 @@ namespace BeautySalonInfrastructure.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // Get type services *and* preserve selected value
             var typeServices = _context.TypeServices.OrderBy(p => p.Name);
-            ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
+            ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", service.TypeServiceId); // Initially set to current value
 
             return View(service);
         }
-
-
 
         // POST: Services/Edit/5
         [HttpPost]
@@ -150,12 +148,15 @@ namespace BeautySalonInfrastructure.Controllers
                 return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
             }
 
-            // Перевірка на унікальність імені
+            // Preserve selected value from the model
+            int selectedTypeServiceId = service.TypeServiceId;
+
+            // Validation check for name uniqueness
             if (_context.Services.Any(s => s.Name == service.Name && s.Id != service.Id))
             {
                 ModelState.AddModelError("Name", "Ця назва вже використовується. Оберіть інше.");
                 var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
-                ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
+                ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", selectedTypeServiceId); // Use preserved value
                 return View(service);
             }
 
@@ -175,6 +176,7 @@ namespace BeautySalonInfrastructure.Controllers
                     throw;
                 }
             }
+
             return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
         }
 
