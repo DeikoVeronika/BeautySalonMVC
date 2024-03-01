@@ -99,5 +99,14 @@ $(document).ready(function () {
             }
         });
     });
+    var usedDates = {};
+    $("select[name='Schedules.Date'] > option").each(function () {
+        if (usedDates[this.text]) {
+            $(this).remove();
+        } else {
+            usedDates[this.text] = this.value;
+        }
+    });
+
 
 });

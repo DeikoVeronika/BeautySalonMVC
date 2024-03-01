@@ -23,8 +23,13 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> Index()
         {
             var dbbeautySalonContext = _context.Schedules.Include(s => s.Employees);
+            ViewBag.SchedulesDate = new SelectList(await dbbeautySalonContext.GroupBy(s => s.Date).Select(g => g.First()).ToListAsync());
             return View(await dbbeautySalonContext.ToListAsync());
         }
+
+
+
+
 
         // GET: Schedules/Details/5
         public async Task<IActionResult> Details(int? id)
