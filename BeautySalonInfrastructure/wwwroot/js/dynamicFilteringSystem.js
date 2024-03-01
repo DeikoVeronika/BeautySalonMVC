@@ -38,6 +38,13 @@ $(document).ready(function () {
 
     $("#Services_Name").change(function () {
         var selectedService = $(this).val();
+        var selectedTypeService = $('#TypeServices_Name').val(); 
+        if (selectedTypeService !== "") {
+            var descriptionInput = $('#Services_Description');
+            descriptionInput.val('');
+            descriptionInput.css('height', 'auto');
+            descriptionInput.height(descriptionInput.prop('scrollHeight'));
+        }
 
         $.ajax({
             url: '/Services/GetServiceDescription',
@@ -92,4 +99,5 @@ $(document).ready(function () {
             }
         });
     });
+
 });
