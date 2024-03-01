@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var previousServiceValue;
+
     $("#TypeServices_Name").change(function () {
         var selectedTypeService = $(this).val();
 
@@ -12,6 +14,7 @@ $(document).ready(function () {
                 });
 
                 var serviceSelect = $('#Services_Name');
+                previousServiceValue = serviceSelect.val();
                 serviceSelect.empty();
 
                 $.each(data, function (index, service) {
@@ -21,7 +24,11 @@ $(document).ready(function () {
                     }));
                 });
 
-                $("#Services_Name").trigger("change");
+                serviceSelect.val(previousServiceValue);
+
+                if (previousServiceValue !== serviceSelect.val()) {
+                    $("#Services_Name").trigger("change");
+                }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -39,7 +46,7 @@ $(document).ready(function () {
             success: function (data) {
                 var descriptionInput = $('#Services_Description');
                 descriptionInput.val(data.description);
-                descriptionInput.css('height', 'auto'); // reset the height
+                descriptionInput.css('height', 'auto');
                 descriptionInput.height(descriptionInput.prop('scrollHeight'));
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -52,9 +59,9 @@ $(document).ready(function () {
             type: 'GET',
             data: { serviceId: selectedService },
             success: function (data) {
-                console.log(data); // Added this line to log the returned data
                 var typeServiceSelect = $('#TypeServices_Name');
                 typeServiceSelect.val(data.typeServiceId);
+                typeServiceSelect.trigger("change");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -84,7 +91,5 @@ $(document).ready(function () {
                 console.log(textStatus, errorThrown);
             }
         });
-
     });
-
 });
