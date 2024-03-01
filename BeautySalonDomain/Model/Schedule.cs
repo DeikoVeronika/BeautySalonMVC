@@ -10,9 +10,12 @@ public partial class Schedule : Entity
     [Display(Name = "Працівник")]
     public int EmployeesId { get; set; }
 
+    [Required(ErrorMessage = "Оберіть дату")]
     [Display(Name = "Дата")]
     public DateOnly Date { get; set; }
 
+
+    [Required(ErrorMessage = "Оберіть час")]
     [Display(Name = "Початок")]
     public TimeOnly StartTime { get; set; }
 
