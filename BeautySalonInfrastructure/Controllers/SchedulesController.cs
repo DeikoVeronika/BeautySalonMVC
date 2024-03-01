@@ -40,6 +40,19 @@ namespace BeautySalonInfrastructure.Controllers
             return Json(dates);
         }
 
+        public async Task<IActionResult> GetStartTimes(int employeeId, DateTime selectedDate)
+        {
+            var startTimes = await _context.Schedules
+                .Where(s => s.EmployeesId == employeeId && s.Date == DateOnly.FromDateTime(selectedDate))
+                .Select(s => s.StartTime)
+                .Distinct()
+                .ToListAsync();
+
+            return Json(startTimes);
+        }
+
+
+
 
 
 
