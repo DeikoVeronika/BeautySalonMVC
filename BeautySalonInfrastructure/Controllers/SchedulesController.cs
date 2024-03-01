@@ -29,6 +29,20 @@ namespace BeautySalonInfrastructure.Controllers
 
 
 
+        public async Task<IActionResult> GetDates(int employeeId)
+        {
+            var dates = await _context.Schedules
+                .Where(s => s.EmployeesId == employeeId)
+                .Select(s => s.Date)
+                .Distinct()
+                .ToListAsync();
+
+            return Json(dates);
+        }
+
+
+
+
 
 
         // GET: Schedules/Details/5

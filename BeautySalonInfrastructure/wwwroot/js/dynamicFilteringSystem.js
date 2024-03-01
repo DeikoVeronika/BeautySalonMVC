@@ -108,5 +108,31 @@ $(document).ready(function () {
         }
     });
 
+    $("#EmployeeServices_EmployeesId").change(function () {
+        var selectedEmployee = $(this).val();
+
+        $.ajax({
+            url: '/Schedules/GetDates',
+            type: 'GET',
+            data: { employeeId: selectedEmployee },
+            success: function (data) {
+                var dateSelect = $('#Schedules_Date');
+                dateSelect.empty();
+
+                $.each(data, function (index, date) {
+                    dateSelect.append($('<option/>', {
+                        value: date,
+                        text: date
+                    }));
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    });
+
+
+
 
 });
