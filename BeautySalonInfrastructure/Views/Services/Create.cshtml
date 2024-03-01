@@ -29,13 +29,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="TypeServiceId" class="control-label"></label>
-                @Html.DropDownListFor(model => model.TypeServiceId, ViewBag.TypeServices as SelectList, new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.TypeServiceId, ViewBag.TypeServices as SelectList, new { @class = "form-control", id = "myTypeServiceDropdown" })
                 <span asp-validation-for="TypeServiceId" class="text-danger"></span>
-@*                 @if (ViewData.ModelState.ContainsKey("TypeServiceId") && ViewData.ModelState["TypeServiceId"].Errors.Any())
-                {
-                    <div class="text-danger">Вибір категорії є обов'язковим</div>
-                } *@
             </div>
+
+
 
 
 
