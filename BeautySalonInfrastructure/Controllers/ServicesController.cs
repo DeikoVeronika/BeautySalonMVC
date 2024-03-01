@@ -52,6 +52,7 @@ namespace BeautySalonInfrastructure.Controllers
         }
 
         // GET: Services/Create
+        // GET: Services/Create
         public IActionResult Create(int? typeServiceId)
         {
             var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
@@ -59,21 +60,26 @@ namespace BeautySalonInfrastructure.Controllers
             return View();
         }
 
-
-
         // POST: Services/Create
         [HttpPost]
-         [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int typeServiceId, [Bind("Name,Description,Price,TypeServiceId")] Service service)
         {
-            // Заповніть ViewBag.TypeServices перед поверненням перегляду
-            ViewBag.TypeServices = new SelectList(_context.TypeServices, "Id", "Name");
+            if (_context.Services.Any(s => s.Name == service.Name))
+            {
+                ModelState.AddModelError("Name", "Це ім'я вже використовується. Виберіть інше.");
+                var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
+                ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
+                return View(service);
+            }
 
             _context.Add(service);
-
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.Where(c => c.Id == typeServiceId).FirstOrDefault().Name });
+            return RedirectToAction("Details", "TypeServices", new { id = typeServiceId, name = _context.TypeServices.FirstOrDefault(c => c.Id == typeServiceId)?.Name });
         }
+
+
+
 
 
 
@@ -144,6 +150,15 @@ namespace BeautySalonInfrastructure.Controllers
                 return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
             }
 
+            // Перевірка на унікальність імені
+            if (_context.Services.Any(s => s.Name == service.Name && s.Id != service.Id))
+            {
+                ModelState.AddModelError("Name", "Ця назва вже використовується. Оберіть інше.");
+                var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
+                ViewBag.TypeServiceId = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
+                return View(service);
+            }
+
             try
             {
                 _context.Update(service);
@@ -162,6 +177,7 @@ namespace BeautySalonInfrastructure.Controllers
             }
             return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
         }
+
 
         // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)

@@ -1,8 +1,8 @@
 window.onload = function () {
-    var selectElements = document.getElementsByTagName('select');
-    for (var i = 0; i < selectElements.length; i++) {
-        selectElements[i].selectedIndex = -1;
+    var selectelements = document.getelementsbytagname('select');
+    for (var i = 0; i < selectelements.length; i++) {
+        if (selectelements[i].value == "") {
+            selectelements[i].selectedindex = -1;
+        }
     }
 };
-
-
