@@ -39,6 +39,12 @@ $(document).ready(function () {
     $("#Services_Name").change(function () {
         var selectedService = $(this).val();
         var selectedTypeService = $('#TypeServices_Name').val(); 
+
+        $("select[name='EmployeeService.Id']").empty();
+        $("select[name='Schedules.Date']").empty();
+        $("select[name='Schedules.StartTime']").empty();
+
+
         if (selectedTypeService !== "") {
             var descriptionInput = $('#Services_Description');
             descriptionInput.val('');
@@ -133,44 +139,39 @@ $(document).ready(function () {
     });
 
     var usedStartTimes = {};
-$("select[name='Schedules.StartTime'] > option").each(function () {
-    if (usedStartTimes[this.text]) {
-        $(this).remove();
-    } else {
-        usedStartTimes[this.text] = this.value;
-    }
-});
-
-$("#Schedules_Date").change(function () {
-    var selectedEmployee = $("#EmployeeServices_EmployeesId").val();
-    var selectedDate = $(this).val();
-
-    $.ajax({
-        url: '/Schedules/GetStartTimes',
-        type: 'GET',
-        data: { 
-            employeeId: selectedEmployee,
-            selectedDate: selectedDate
-        },
-        success: function (data) {
-            var startTimeSelect = $('#Schedules_StartTime');
-            startTimeSelect.empty();
-
-            $.each(data, function (index, startTime) {
-                startTimeSelect.append($('<option/>', {
-                    value: startTime,
-                    text: startTime
-                }));
-            });
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
+    $("select[name='Schedules.StartTime'] > option").each(function () {
+        if (usedStartTimes[this.text]) {
+            $(this).remove();
+        } else {
+            usedStartTimes[this.text] = this.value;
         }
     });
-});
 
+    $("#Schedules_Date").change(function () {
+        var selectedEmployee = $("#EmployeeServices_EmployeesId").val();
+        var selectedDate = $(this).val();
 
+        $.ajax({
+            url: '/Schedules/GetStartTimes',
+            type: 'GET',
+            data: { 
+                employeeId: selectedEmployee,
+                selectedDate: selectedDate
+            },
+            success: function (data) {
+                var startTimeSelect = $('#Schedules_StartTime');
+                startTimeSelect.empty();
 
-
-
+                $.each(data, function (index, startTime) {
+                    startTimeSelect.append($('<option/>', {
+                        value: startTime,
+                        text: startTime
+                    }));
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            }
+        });
+    });
 });
