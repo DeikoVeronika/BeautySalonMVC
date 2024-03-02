@@ -1,4 +1,4 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
     var previousServiceValue;
 
     $("#TypeServices_Name").change(function () {
@@ -29,6 +29,7 @@ $(document).ready(function () {
                 if (previousServiceValue !== serviceSelect.val()) {
                     $("#Services_Name").trigger("change");
                 }
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -80,7 +81,7 @@ $(document).ready(function () {
                 console.log(textStatus, errorThrown);
             }
         });
-
+            
         $.ajax({
             url: '/EmployeeServices/GetEmployees',
             type: 'GET',
@@ -92,6 +93,11 @@ $(document).ready(function () {
 
                 var employeeSelect = $('#EmployeeServices_EmployeesId');
                 employeeSelect.empty();
+                employeeSelect.append($('<option/>', {
+                    value: "",
+                    text: "Оберіть майстра",
+                    disabled: "disabled"
+                }));
 
                 $.each(data, function (index, employee) {
                     employeeSelect.append($('<option/>', {
@@ -99,11 +105,15 @@ $(document).ready(function () {
                         text: employee.name
                     }));
                 });
+                employeeSelect.val("");
+
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
             }
         });
+
+
     });
     var usedDates = {};
     $("select[name='Schedules.Date'] > option").each(function () {
