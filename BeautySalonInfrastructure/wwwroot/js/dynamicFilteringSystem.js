@@ -127,6 +127,10 @@
     $("#EmployeeServices_EmployeesId").change(function () {
         var selectedEmployee = $(this).val();
 
+        // Очищаємо поля дати та часу
+        $('#Schedules_Date').val("");
+        $('#Schedules_StartTime').empty();
+
         $.ajax({
             url: '/Schedules/GetDates',
             type: 'GET',
@@ -148,6 +152,7 @@
                     }));
                 });
 
+                // Встановлюємо значення "Оберіть дату"
                 dateSelect.val("");
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -170,6 +175,9 @@
         var selectedEmployee = $("#EmployeeServices_EmployeesId").val();
         var selectedDate = $(this).val();
 
+        // Очищаємо поле часу
+        $('#Schedules_StartTime').empty();
+
         $.ajax({
             url: '/Schedules/GetStartTimes',
             type: 'GET',
@@ -179,7 +187,6 @@
             },
             success: function (data) {
                 var startTimeSelect = $('#Schedules_StartTime');
-                startTimeSelect.empty();
 
                 startTimeSelect.append($('<option/>', {
                     value: "",
@@ -194,6 +201,7 @@
                     }));
                 });
 
+                // Встановлюємо значення "Оберіть час"
                 startTimeSelect.val("");
             },
             error: function (jqXHR, textStatus, errorThrown) {
