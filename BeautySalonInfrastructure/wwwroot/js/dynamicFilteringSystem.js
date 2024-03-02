@@ -135,18 +135,27 @@
                 var dateSelect = $('#Schedules_Date');
                 dateSelect.empty();
 
+                dateSelect.append($('<option/>', {
+                    value: "",
+                    text: "Оберіть дату",
+                    disabled: "disabled"
+                }));
+
                 $.each(data, function (index, date) {
                     dateSelect.append($('<option/>', {
                         value: date,
                         text: date
                     }));
                 });
+
+                dateSelect.val("");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
             }
         });
     });
+
 
     var usedStartTimes = {};
     $("select[name='Schedules.StartTime'] > option").each(function () {
@@ -164,7 +173,7 @@
         $.ajax({
             url: '/Schedules/GetStartTimes',
             type: 'GET',
-            data: { 
+            data: {
                 employeeId: selectedEmployee,
                 selectedDate: selectedDate
             },
@@ -172,16 +181,25 @@
                 var startTimeSelect = $('#Schedules_StartTime');
                 startTimeSelect.empty();
 
+                startTimeSelect.append($('<option/>', {
+                    value: "",
+                    text: "Оберіть час",
+                    disabled: "disabled"
+                }));
+
                 $.each(data, function (index, startTime) {
                     startTimeSelect.append($('<option/>', {
                         value: startTime,
                         text: startTime
                     }));
                 });
+
+                startTimeSelect.val("");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
             }
         });
     });
+
 });
