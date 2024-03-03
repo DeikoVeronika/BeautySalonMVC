@@ -1,8 +1,12 @@
 ﻿$(document).ready(function () {
     var previousServiceValue;
 
+    $("select[name='EmployeeServices.EmployeesId']").prop('disabled', true);
+    $("select[name='Schedules.Date']").prop('disabled', true);
+    $("select[name='Schedules.StartTime']").prop('disabled', true);
     $("#TypeServices_Name").change(function () {
         var selectedTypeService = $(this).val();
+
 
         $.ajax({
             url: '/Services/GetServices',
@@ -16,6 +20,7 @@
                 var serviceSelect = $('#Services_Name');
                 previousServiceValue = serviceSelect.val();
                 serviceSelect.empty();
+
 
                 $.each(data, function (index, service) {
                     serviceSelect.append($('<option/>', {
@@ -41,7 +46,11 @@
         var selectedService = $(this).val();
         var selectedTypeService = $('#TypeServices_Name').val(); 
 
-        $("select[name='EmployeeService.Id']").empty();
+        $("select[name='EmployeeServices.EmployeesId']").prop('disabled', selectedService === "");
+        $("select[name='Schedules.Date']").prop('disabled', selectedService === "");
+        $("select[name='Schedules.StartTime']").prop('disabled', selectedService === "");
+
+        $("select[name='EmployeeServices.EmployeesId']").empty();
         $("select[name='Schedules.Date']").empty();
         $("select[name='Schedules.StartTime']").empty();
 

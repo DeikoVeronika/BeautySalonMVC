@@ -13,12 +13,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Clients.FirstName" class="control-label"></label>
-                <input asp-for="Clients.FirstName" class="form-control" />
+                <input asp-for="Clients.FirstName" class="form-control" placeholder="Тарас" />
                 <span asp-validation-for="Clients.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Clients.LastName" class="control-label"></label>
-                <input asp-for="Clients.LastName" class="form-control" />
+                <input asp-for="Clients.LastName" class="form-control" placeholder="Шевченко" />
                 <span asp-validation-for="Clients.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,8 +28,8 @@
             </div>
             <hr />
             <div class="form-group">
-                <label asp-for="TypeServices.Name" class="control-label"></label>
-                <select asp-for="TypeServices.Name" class="form-control" asp-items="ViewBag.TypeServicesName" ></select>
+                <label asp-for="TypeServices.Name" class="control-label" ></label >
+                <select asp-for="TypeServices.Name" class="form-control" asp-items="ViewBag.TypeServicesName"  ></select>
             </div>
             <div class="form-group">
                 <label asp-for="Services.Name" class="control-label"></label>
