@@ -23,7 +23,16 @@ html {
 }
 
 body {
+    margin-top: 150px;
     margin-bottom: 60px;
+}
+
+.navbar {
+    overflow: hidden;
+    position: fixed; 
+    top: 0;
+    width: 100%;
+    z-index:1;
 }
 
 .table-name {
