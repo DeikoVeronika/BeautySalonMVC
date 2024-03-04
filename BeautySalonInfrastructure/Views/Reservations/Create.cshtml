@@ -1,4 +1,4 @@
-﻿@model BeautySalonDomain.Model.Reservation
+﻿@model BeautySalonInfrastructure.Models.ReservationViewModel
 
 @{
     ViewData["Title"] = "Створення бронювання";
@@ -7,76 +7,67 @@
 <h1>Створення бронювання</h1>
 
 <hr />
-<div class="row" >
+
+<div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Clients.FirstName" class="control-label"></label>
-                <input asp-for="Clients.FirstName" class="form-control" placeholder="Тарас" />
-                <span asp-validation-for="Clients.FirstName" class="text-danger"></span>
+                <label asp-for="Client.FirstName">Ім'я</label>
+                <input asp-for="Client.FirstName" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Clients.LastName" class="control-label"></label>
-                <input asp-for="Clients.LastName" class="form-control" placeholder="Шевченко" />
-                <span asp-validation-for="Clients.LastName" class="text-danger"></span>
+                <label asp-for="Client.LastName">Прізвище</label>
+                <input asp-for="Client.LastName" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Clients.Phone" class="control-label"></label>
-                <input id="phoneInput" asp-for="Clients.Phone" class="form-control" />
-                <span asp-validation-for="Clients.Phone" class="text-danger"></span>
-            </div>
-            <hr />
-            <div class="form-group">
-                <label asp-for="TypeServices.Name" class="control-label" ></label >
-                <select asp-for="TypeServices.Name" class="form-control" asp-items="ViewBag.TypeServicesName"  ></select>
+                <label asp-for="Client.Phone">Телефон</label>
+                <input asp-for="Client.Phone" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Services.Name" class="control-label"></label>
-                <select asp-for="Services.Name" class="form-control" asp-items="ViewBag.ServiceName"></select>
+                <label asp-for="Client.Email">Email</label>
+                <input asp-for="Client.Email" class="form-control" />
             </div>
-            <div class="form-group">
-                <label asp-for="Services.Description" class="control-label"></label>
-                <textarea id="Services_Description" asp-for="Services.Description" class="form-control" style="resize: none;" disabled></textarea>
-            </div>
-
-
 
             <hr />
-            <div class="form-group">
-                <label asp-for="EmployeeServices.EmployeesId" class="control-label"></label>
-                <select asp-for="EmployeeServices.EmployeesId" class="form-control" asp-items="ViewBag.EmployeeServicesEmployeesId"></select>
-            </div>
-
-
 
             <div class="form-group">
-                <label asp-for="Schedules.Date" class="control-label"></label>
-                <select asp-for="Schedules.Date" class="form-control" asp-items="ViewBag.SchedulesDate"></select>
-                <span asp-validation-for="Schedules.Date" class="text-danger"></span>
+                <label asp-for="TypeServicesId">Тип послуги</label>
+                <select asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServicesId">Послуга</label>
+                <select asp-for="ServicesId" asp-items="ViewBag.ServicesId" class="form-control"></select>
             </div>
 
+            <hr />
 
             <div class="form-group">
-                <label asp-for="Schedules.StartTime" class="control-label"></label>
-                <select asp-for="Schedules.StartTime" class="form-control" asp-items="ViewBag.SchedulesStartTime"></select>
-                <span asp-validation-for="Schedules.StartTime" class="text-danger"></span>
+                <label asp-for="EmployeeServicesId">Майстер</label>
+                <select asp-for="EmployeeServicesId" asp-items="ViewBag.EmployeeServicesId" class="form-control"></select>
             </div>
+
+            <div class="form-group">
+                <label asp-for="SchedulesId">Дата</label>
+                <select asp-for="SchedulesId" asp-items="ViewBag.SchedulesDate" class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SchedulesId">Час початку</label>
+                <select asp-for="SchedulesId" asp-items="ViewBag.SchedulesStartTime" class="form-control"></select>
+            </div>
+
             <div class="create-or-back">
-                <input class="btn btn-outline-primary" type="submit" value="Створити" />
+                <input class="btn btn-outline-primary" type="submit" value="Створити бронювання" />
                 <a class="btn" asp-action="Index">Назад</a>
             </div>
         </form>
 
     </div>
-
 </div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="/js/phoneInput.js"></script>
     <script src="/js/cleanDropDownList.js"></script>
     <script src="/js/dynamicFilteringSystem.js"></script>
-
 }

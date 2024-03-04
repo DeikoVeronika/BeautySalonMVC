@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     const phoneInput = document.getElementById('phoneInput');
-    const defaultPrefix = '+380';
+    const defaultPrefix = '+380';   
 
     if (!phoneInput.value.startsWith(defaultPrefix)) {
         phoneInput.value = defaultPrefix;

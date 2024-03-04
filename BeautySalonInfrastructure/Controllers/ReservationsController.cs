@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BeautySalonDomain.Model;
 using BeautySalonInfrastructure;
+using System.Runtime.InteropServices;
+using BeautySalonInfrastructure.Models;
 
 namespace BeautySalonInfrastructure.Controllers
 {
@@ -19,12 +21,16 @@ namespace BeautySalonInfrastructure.Controllers
             _context = context;
         }
 
+
+
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
             var dbbeautySalonContext = _context.Reservations.Include(r => r.Clients).Include(r => r.Schedules).Include(r => r.Services);
             return View(await dbbeautySalonContext.ToListAsync());
         }
+
+
 
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -47,44 +53,74 @@ namespace BeautySalonInfrastructure.Controllers
             return View(reservation);
         }
 
+
+
         // GET: Reservations/Create
         public IActionResult Create()
         {
-            ViewBag.ClientsFirstName = new SelectList(_context.Clients, "Id", "FirstName");
-            ViewBag.ClientsLastName = new SelectList(_context.Clients, "Id", "LastName");
-            ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone");
+            ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
             ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
-            ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name");
-            ViewBag.ServiceName = new SelectList(_context.Services.OrderBy(s => s.Name), "Id", "Name");
-            ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description");
-            ViewBag.EmployeeServicesEmployeesId = new SelectList(_context.EmployeeServices.Include(es => es.Employees), "Id", "Employees.Name");
+            ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
+            ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name");
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Clients.FirstName,Clients.LastName,Clients.Phone,Schedules.Date,Schedules.StartTime,TypeServices.Name,Services.Name,Services.Description,EmployeeServices.EmployeesId,Id")] Reservation reservation)
+        public async Task<IActionResult> Create(ReservationViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var client = new Client
+                {
+                    FirstName = model.Client.FirstName,
+                    LastName = model.Client.LastName,
+                    Phone = model.Client.Phone,
+                    Email = model.Client.Email
+                };
+
+                _context.Add(client);
+                await _context.SaveChangesAsync();
+
+                var reservation = new Reservation
+                {
+                    ClientsId = client.Id,
+                    ServicesId = model.ServicesId,
+                    SchedulesId = model.SchedulesId,
+                    TypeServicesId = model.TypeServicesId,
+                    EmployeeServicesId = model.EmployeeServicesId
+                };
+
                 _context.Add(reservation);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.ClientsFirstName = new SelectList(_context.Clients, "Id", "FirstName", reservation.Clients.FirstName);
-            ViewBag.ClientsLastName = new SelectList(_context.Clients, "Id", "LastName", reservation.Clients.LastName);
-            ViewBag.ClientsPhone = new SelectList(_context.Clients, "Id", "Phone", reservation.Clients.Phone);
-            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", reservation.Schedules.Date);
-            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", reservation.Schedules.StartTime);
-            ViewBag.TypeServicesName = new SelectList(_context.TypeServices.OrderBy(ts => ts.Name), "Id", "Name", reservation.TypeServices.Name);
-            ViewBag.ServiceName = new SelectList(_context.Services.OrderBy(s => s.Name), "Id", "Name", reservation.Services.Name);
-            ViewBag.ServiceDescription = new SelectList(_context.Services, "Id", "Description", reservation.Services.Description);
-            ViewBag.EmployeeServicesEmployeesId = new SelectList(_context.EmployeeServices, "Id", "Employees.Name", reservation.EmployeeServices.EmployeesId);
 
-            return View(reservation);
+            ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name", model.ServicesId);
+            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", model.SchedulesId);
+            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", model.SchedulesId);
+            ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name", model.TypeServicesId);
+            ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name", model.EmployeeServicesId);
+
+            return View(model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
