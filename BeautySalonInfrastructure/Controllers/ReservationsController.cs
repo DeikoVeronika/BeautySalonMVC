@@ -53,59 +53,110 @@ namespace BeautySalonInfrastructure.Controllers
             return View(reservation);
         }
 
-
-
-        // GET: Reservations/Create
         public IActionResult Create()
+{
+    var model = new ReservationViewModel();
+    PopulateDropdowns();
+
+    return View(model);
+}
+
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create(ReservationViewModel model)
+{
+    PopulateDropdowns();
+
+    try
+    {
+        var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == model.Client.Email);
+
+        if (client == null)
         {
+            client = new Client
+            {
+                FirstName = model.Client.FirstName,
+                LastName = model.Client.LastName,
+                Phone = model.Client.Phone,
+                Email = model.Client.Email
+            };
+
+            _context.Clients.Add(client);
+            await _context.SaveChangesAsync();
+        }
+
+        var reservation = new Reservation
+        {
+            ClientsId = client.Id,
+            ServicesId = model.ServicesId,
+            SchedulesId = model.SchedulesId,
+            TypeServicesId = model.TypeServicesId,
+            EmployeeServicesId = model.EmployeeServicesId,
+            Info = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") // Додаємо дату та час створення бронювання
+        };
+
+        _context.Reservations.Add(reservation);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
+    catch (Exception ex)
+    {
+        ModelState.AddModelError("", "An error occurred while creating the reservation.");
+        PopulateDropdowns();
+
+        return View(model);
+    }
+}
+
+
+        private void PopulateDropdowns()
+        {
+            ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
             ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
+            ViewBag.EmployeeServicesId = _context.EmployeeServices.Select(e => new SelectListItem
+            {
+                Value = e.EmployeesId.ToString(),
+                Text = e.Employees.Name
+            }).ToList();
             ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
-            ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
-            ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name");
-
-            return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ReservationViewModel model)
+        public async Task<IActionResult> GetServices(int typeId)
         {
-            if (ModelState.IsValid)
-            {
-                var client = new Client
-                {
-                    FirstName = model.Client.FirstName,
-                    LastName = model.Client.LastName,
-                    Phone = model.Client.Phone,
-                    Email = model.Client.Email
-                };
+            var services = await _context.Services
+                .Where(s => s.TypeServiceId == typeId)
+                .Select(s => new { value = s.Id, text = s.Name })
+                .ToListAsync();
+            return Json(services);
+        }
 
-                _context.Add(client);
-                await _context.SaveChangesAsync();
+        public async Task<IActionResult> GetEmployees(int serviceId)
+        {
+            var employees = await _context.EmployeeServices
+                .Where(e => e.ServicesId == serviceId)
+                .Select(e => new { value = e.EmployeesId, text = e.Employees.Name })
+                .ToListAsync();
+            return Json(employees);
+        }
 
-                var reservation = new Reservation
-                {
-                    ClientsId = client.Id,
-                    ServicesId = model.ServicesId,
-                    SchedulesId = model.SchedulesId,
-                    TypeServicesId = model.TypeServicesId,
-                    EmployeeServicesId = model.EmployeeServicesId
-                };
+        public async Task<IActionResult> GetDates(int employeeId)
+        {
+            var dates = await _context.Schedules
+                .Where(s => s.EmployeesId == employeeId)
+                .Select(s => new { value = s.Id, text = s.Date.ToString("yyyy-MM-dd") }) // Format date as needed
+                .ToListAsync();
+            return Json(dates);
+        }
 
-                _context.Add(reservation);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name", model.ServicesId);
-            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", model.SchedulesId);
-            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", model.SchedulesId);
-            ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name", model.TypeServicesId);
-            ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name", model.EmployeeServicesId);
-
-            return View(model);
+        public async Task<IActionResult> GetTimes(int dateId)
+        {
+            var times = await _context.Schedules
+                .Where(s => s.Id == dateId)
+                .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") }) // Format time as needed
+                .ToListAsync();
+            return Json(times);
         }
 
 
@@ -113,20 +164,200 @@ namespace BeautySalonInfrastructure.Controllers
 
 
 
+        //// GET: Reservations/Create
+        //public IActionResult Create()
+        //{
+        //    ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
+        //    ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
+        //    ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
+        //    ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
+        //    ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name");
+
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(ReservationViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var client = new Client
+        //        {
+        //            FirstName = model.Client.FirstName,
+        //            LastName = model.Client.LastName,
+        //            Phone = model.Client.Phone,
+        //            Email = model.Client.Email
+        //        };
+
+        //        _context.Add(client);
+        //        await _context.SaveChangesAsync();
+
+        //        var reservation = new Reservation
+        //        {
+        //            ClientsId = client.Id,
+        //            ServicesId = model.ServicesId,
+        //            SchedulesId = model.SchedulesId,
+        //            TypeServicesId = model.TypeServicesId,
+        //            EmployeeServicesId = model.EmployeeServicesId
+        //        };
+
+        //        _context.Add(reservation);
+        //        await _context.SaveChangesAsync();
+
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name", model.ServicesId);
+        //    ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date", model.SchedulesId);
+        //    ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime", model.SchedulesId);
+        //    ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name", model.TypeServicesId);
+        //    ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name", model.EmployeeServicesId);
+
+        //    return View(model);
+        //}
 
 
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
 
+        //public IActionResult CreateStepOne()
+        //{
+        //    return PartialView("_StepOne", new ReservationStepOneCreatingClientViewModel());
+        //}
 
 
+        //// Крок 1: Створення клієнта
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateStepOne(ReservationStepOneCreatingClientViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        using var transaction = _context.Database.BeginTransaction();
 
+        //        try
+        //        {
+        //            var client = new Client
+        //            {
+        //                FirstName = model.Client.FirstName,
+        //                LastName = model.Client.LastName,
+        //                Phone = model.Client.Phone,
+        //                Email = model.Client.Email
+        //            };
 
+        //            _context.Add(client);
+        //            await _context.SaveChangesAsync();
 
+        //            HttpContext.Session.SetString("TransactionId", transaction.TransactionId.ToString());
 
+        //            return RedirectToAction(nameof(CreateStepTwo), new { clientId = client.Id });
+        //        }
+        //        catch (Exception)
+        //        {
+        //            transaction.Rollback();
+        //            throw;
+        //        }
+        //    }
 
+        //    return View(model);
+        //}
 
+        //// Крок 2: Вибір послуги
+        //public IActionResult CreateStepTwo(int clientId)
+        //{
+        //    ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
+        //    ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
 
-        // GET: Reservations/Edit/5
+        //    return View(new ReservationStepTwoChoosingServiceViewModel { ClientId = clientId });
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CreateStepTwo(ReservationStepTwoChoosingServiceViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        return RedirectToAction(nameof(CreateStepThree), new { clientId = model.ClientId, servicesId = model.ServicesId, typeServicesId = model.TypeServicesId });
+        //    }
+
+        //    ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name", model.ServicesId);
+        //    ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name", model.TypeServicesId);
+
+        //    return View(model);
+        //}
+
+        //// Крок 3: Вибір працівника
+        //public IActionResult CreateStepThree(int clientId, int servicesId, int typeServicesId)
+        //{
+        //    ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name");
+
+        //    return View(new ReservationStepThreeChoosingEmployeeViewModel { ClientId = clientId, ServicesId = servicesId, TypeServicesId = typeServicesId });
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult CreateStepThree(ReservationStepThreeChoosingEmployeeViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        return RedirectToAction(nameof(CreateStepFour), new { clientId = model.ClientId, servicesId = model.ServicesId, typeServicesId = model.TypeServicesId, employeeServicesId = model.EmployeeServicesId });
+        //    }
+
+        //    ViewBag.EmployeeServicesId = new SelectList(_context.EmployeeServices.Include(e => e.Employees), "Id", "Employees.Name", model.EmployeeServicesId);
+
+        //    return View(model);
+        //}
+
+        //// Крок 4: Вибір часу
+        //public IActionResult CreateStepFour(int clientId, int servicesId, int typeServicesId, int employeeServicesId)
+        //{
+        //    ViewBag.SchedulesId = new SelectList(_context.Schedules, "Id", "Date");
+
+        //    return View(new ReservationStepFourChoosingTimeViewModel { ClientId = clientId, ServicesId = servicesId, TypeServicesId = typeServicesId, EmployeeServicesId = employeeServicesId });
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> CreateStepFour(ReservationStepFourChoosingTimeViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        using var transaction = _context.Database.BeginTransaction();
+
+        //        try
+        //        {
+        //            var reservation = new Reservation
+        //            {
+        //                ClientsId = model.ClientId,
+        //                ServicesId = model.ServicesId,
+        //                SchedulesId = model.SchedulesId,
+        //                TypeServicesId = model.TypeServicesId,
+        //                EmployeeServicesId = model.EmployeeServicesId
+        //            };
+
+        //            _context.Add(reservation);
+        //            await _context.SaveChangesAsync();
+
+        //            transaction.Commit();
+
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (Exception)
+        //        {
+        //            transaction.Rollback();
+        //            throw;
+        //        }
+        //    }
+
+        //    ViewBag.SchedulesId = new SelectList(_context.Schedules, "Id", "Date", model.SchedulesId);
+
+        //    return View(model);
+        //}
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -223,5 +454,7 @@ namespace BeautySalonInfrastructure.Controllers
         {
             return _context.Reservations.Any(e => e.Id == id);
         }
+
     }
 }
+

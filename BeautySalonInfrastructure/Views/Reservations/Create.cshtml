@@ -32,28 +32,28 @@
 
             <div class="form-group">
                 <label asp-for="TypeServicesId">Тип послуги</label>
-                <select asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
+                <select id="TypeServicesId" asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ServicesId">Послуга</label>
-                <select asp-for="ServicesId" asp-items="ViewBag.ServicesId" class="form-control"></select>
+                <select id="ServicesId" asp-for="ServicesId" class="form-control"></select>
             </div>
 
             <hr />
 
             <div class="form-group">
                 <label asp-for="EmployeeServicesId">Майстер</label>
-                <select asp-for="EmployeeServicesId" asp-items="ViewBag.EmployeeServicesId" class="form-control"></select>
+                <select id="EmployeeServicesId" asp-for="EmployeeServicesId" class="form-control"></select>
             </div>
 
             <div class="form-group">
                 <label asp-for="SchedulesId">Дата</label>
-                <select asp-for="SchedulesId" asp-items="ViewBag.SchedulesDate" class="form-control"></select>
+                <select id="SchedulesDate" asp-for="SchedulesId" class="form-control"></select>
             </div>
 
             <div class="form-group">
                 <label asp-for="SchedulesId">Час початку</label>
-                <select asp-for="SchedulesId" asp-items="ViewBag.SchedulesStartTime" class="form-control"></select>
+                <select id="SchedulesStartTime" asp-for="SchedulesId" class="form-control"></select>
             </div>
 
             <div class="create-or-back">
@@ -67,7 +67,165 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="/js/phoneInput.js"></script>
-    <script src="/js/cleanDropDownList.js"></script>
-    <script src="/js/dynamicFilteringSystem.js"></script>
+<script>
+        $(document).ready(function () {
+            $("#TypeServicesId").change(function () {
+                var typeId = $(this).val();
+                $.getJSON("/Reservations/GetServices", { typeId: typeId }, function (data) {
+                    var items = "<option>Select a Service</option>";
+                    $.each(data, function (i, service) {
+                        items += "<option value='" + service.value + "'>" + service.text + "</option>";
+                    });
+                    $("#ServicesId").html(items);
+                });
+            });
+
+            $("#ServicesId").change(function () {
+                var serviceId = $(this).val();
+                $.getJSON("/Reservations/GetEmployees", { serviceId: serviceId }, function (data) {
+                    var items = "<option>Select an Employee</option>";
+                    $.each(data, function (i, employee) {
+                        items += "<option value='" + employee.value + "'>" + employee.text + "</option>";
+                    });
+                    $("#EmployeeServicesId").html(items);
+                });
+            });
+
+            $("#EmployeeServicesId").change(function () {
+                var employeeId = $(this).val();
+                $.getJSON("/Reservations/GetDates", { employeeId: employeeId }, function (data) {
+                    var items = "<option>Select a Date</option>";
+                    $.each(data, function (i, date) {
+                        items += "<option value='" + date.value + "'>" + date.text + "</option>";
+                    });
+                    $("#SchedulesDate").html(items);
+                });
+            });
+
+            $("#SchedulesDate").change(function () {
+                var dateId = $(this).val();
+                $.getJSON("/Reservations/GetTimes", { dateId: dateId }, function (data) {
+                    var items = "<option>Select a Time</option>";
+                    $.each(data, function (i, time) {
+                        items += "<option value='" + time.value + "'>" + time.text + "</option>";
+                    });
+                    $("#SchedulesStartTime").html(items);
+                });
+            });
+        });
+
+
+</script>
 }
+
+@* 
+@model BeautySalonInfrastructure.Models.ReservationViewModel
+
+@{
+    ViewData["Title"] = "Створення бронювання";
+}
+
+<h1>Створення бронювання</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="reservationForm" asp-action="Create">
+            <div id="stepOne">
+                <!-- Крок 1: Створення клієнта -->
+                <div class="form-group">
+                    <label asp-for="Client.FirstName">Ім'я</label>
+                    <input asp-for="Client.FirstName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Client.LastName">Прізвище</label>
+                    <input asp-for="Client.LastName" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Client.Phone">Телефон</label>
+                    <input asp-for="Client.Phone" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Client.Email">Email</label>
+                    <input asp-for="Client.Email" class="form-control" />
+                </div>
+                <button type="button" class="btn btn-primary" onclick="goToStep(2)">Наступний крок</button>
+            </div>
+
+            <div id="stepTwo" style="display: none;">
+                <!-- Крок 2: Вибір послуги -->
+                <div class="form-group">
+                    <label asp-for="ServicesId">Послуга</label>
+                    <select asp-for="ServicesId" asp-items="ViewBag.ServicesId" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TypeServicesId">Тип послуги</label>
+                    <select asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="goToStep(3)">Наступний крок</button>
+            </div>
+
+            <div id="stepThree" style="display: none;">
+                <!-- Крок 3: Вибір працівника -->
+                <div class="form-group">
+                    <label asp-for="EmployeeServicesId">Майстер</label>
+                    <select asp-for="EmployeeServicesId" asp-items="ViewBag.EmployeeServicesId" class="form-control"></select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="goToStep(4)">Наступний крок</button>
+            </div>
+
+            <div id="stepFour" style="display: none;">
+                <!-- Крок 4: Вибір часу -->
+                <div class="form-group">
+                    <label asp-for="SchedulesId">Дата</label>
+                    <select asp-for="SchedulesId" asp-items="ViewBag.SchedulesDate" class="form-control"></select>
+                </div>
+                <input class="btn btn-outline-primary" type="submit" value="Створити бронювання" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        debugger;
+        $(document).ready(function () {
+            function goToStep(step) {
+                for (let i = 1; i <= 4; i++) {
+                    let stepElement = $('#step' + i);
+                    if (stepElement.length) { 
+                        stepElement.css('display', (i === step) ? 'block' : 'none');
+                    }
+                }
+
+                let stepElement = $('#step' + step);
+                if (stepElement.length) { 
+                    $('html, body').animate({
+                        scrollTop: stepElement.offset().top
+                    }, 'slow');
+                }
+
+                window.location.hash = '#step' + step;
+            }
+
+            $('#stepOne .btn').click(function () {
+                goToStep(2);
+            });
+
+            $('#stepTwo .btn').click(function () {
+                goToStep(3);
+            });
+
+            $('#stepThree .btn').click(function () {
+                goToStep(4);
+            });
+        });
+
+
+    </script>
+} *@
+

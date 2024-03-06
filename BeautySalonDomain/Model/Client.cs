@@ -34,7 +34,6 @@ public partial class Client: Entity
     public string Phone { get; set; } = null!;
 
 
-    [Required(ErrorMessage = "Введіть дату народження")]
     [Display(Name = "Дата народження")]
     [DataType(DataType.Date)]
     [DateOfBirth]
