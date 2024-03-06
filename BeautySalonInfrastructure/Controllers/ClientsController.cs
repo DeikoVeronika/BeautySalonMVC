@@ -36,6 +36,10 @@ namespace BeautySalonInfrastructure.Controllers
             }
 
             var client = await _context.Clients
+                .Include(c => c.Reservations)
+                    .ThenInclude(r => r.Services)
+                .Include(c => c.Reservations)
+                    .ThenInclude(r => r.Schedules)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
@@ -44,6 +48,7 @@ namespace BeautySalonInfrastructure.Controllers
 
             return View(client);
         }
+
 
         // GET: Clients/Create
         public IActionResult Create()

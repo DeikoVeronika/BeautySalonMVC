@@ -41,6 +41,37 @@
         </dd>
     </dl>
 </div>
+
+<h2>Бронювання клієнта</h2>
+@if (Model.Reservations.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Service</th>
+                <th>Date</th>
+                <!-- Add other reservation details as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reservation in Model.Reservations)
+            {
+                <tr>
+                    <td>@reservation.Id</td>
+                    <td>@reservation.Services.Name</td>
+                    <td>@reservation.Schedules.Date.ToString("yyyy-MM-dd")</td>
+                    <!-- Add other reservation details as needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Цей клієнт ще не зробив жодного бронювання.</p>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Редагувати</a> |
     <a asp-action="Index">Назад</a>
