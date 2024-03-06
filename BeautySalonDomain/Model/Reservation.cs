@@ -16,7 +16,7 @@ public partial class Reservation : Entity
     [Display(Name = "Графік")]
     public int SchedulesId { get; set; }
 
-    [Display(Name = "Інформація")]
+    [Display(Name = "Бронювання створено")]
     public string Info { get; set; } = null!;
 
     [Display(Name = "Категорія  ")]

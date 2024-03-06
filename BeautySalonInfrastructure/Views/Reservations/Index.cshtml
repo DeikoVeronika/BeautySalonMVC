@@ -10,16 +10,22 @@
     <thead>
         <tr class="table-titles">
             <th class="table-name">
-                @Html.DisplayNameFor(model => model.Info)
+                @Html.DisplayNameFor(model => model.Services)
             </th>
             <th class="table-name">
                 @Html.DisplayNameFor(model => model.Clients)
             </th>
             <th class="table-name">
-                @Html.DisplayNameFor(model => model.Schedules)
+                @Html.DisplayNameFor(model => model.Schedules.Date)
+            </th>            
+            <th class="table-name">
+                @Html.DisplayNameFor(model => model.Schedules.StartTime)
+            </th>            
+            <th class="table-name">
+                @Html.DisplayNameFor(model => model.Schedules.EndTime)
             </th>
             <th class="table-name">
-                @Html.DisplayNameFor(model => model.Services)
+                @Html.DisplayNameFor(model => model.Info)
             </th>
             <th>
                 <a class="btn btn-outline-primary" asp-action="Create">Створити бронювання</a>
@@ -31,17 +37,24 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Info)
+                @Html.DisplayFor(modelItem => item.Services.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Clients.Email)
+                @Html.DisplayFor(modelItem => item.Clients.LastName)
+                @Html.DisplayFor(modelItem => item.Clients.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Schedules.Id)
-            </td>
+                @Html.DisplayFor(modelItem => item.Schedules.Date)
+            </td>           
             <td>
-                @Html.DisplayFor(modelItem => item.Services.Description)
+                @Html.DisplayFor(modelItem => item.Schedules.StartTime)
+            </td>            
+            <td>
+                @Html.DisplayFor(modelItem => item.Schedules.EndTime)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Деталі</a> |

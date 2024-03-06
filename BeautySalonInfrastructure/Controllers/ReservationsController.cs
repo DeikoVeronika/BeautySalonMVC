@@ -92,7 +92,7 @@ public async Task<IActionResult> Create(ReservationViewModel model)
             SchedulesId = model.SchedulesId,
             TypeServicesId = model.TypeServicesId,
             EmployeeServicesId = model.EmployeeServicesId,
-            Info = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") // Додаємо дату та час створення бронювання
+            Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") // Додаємо час та дату створення бронювання
         };
 
         _context.Reservations.Add(reservation);
