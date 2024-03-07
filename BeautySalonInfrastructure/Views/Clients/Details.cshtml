@@ -45,14 +45,16 @@
 
 
 <h2>Бронювання клієнта</h2>
+<hr />
+
 @if (Model.Reservations.Any())
 {
     <table class="table">
         <thead>
-            <tr>>
-                <th>Послуга</th>
-                <th>Початок</th>
-                <th>Дата</th>
+            <tr>
+                <th class="table-name">Послуга</th>
+                <th class="table-name">Початок</th>
+                <th class="table-name">Дата</th>
             </tr>
         </thead>
         <tbody>

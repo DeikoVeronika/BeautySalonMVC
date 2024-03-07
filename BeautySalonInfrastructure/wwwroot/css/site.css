@@ -184,6 +184,10 @@ p[action="right"] {
     font-size: 18px;
 }
 
+.disable-option {
+    background-color: #cccccc;
+    color: white;
+}
 
 
 

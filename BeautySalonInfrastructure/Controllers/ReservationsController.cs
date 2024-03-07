@@ -123,6 +123,20 @@ public async Task<IActionResult> Create(ReservationViewModel model)
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
         }
 
+        [HttpGet]
+        public JsonResult GetTypeServices()
+        {
+            var typeServices = _context.TypeServices.Select(t => new
+            {
+                value = t.Id,
+                text = t.Name
+            }).ToList();
+
+            return Json(typeServices);
+        }
+
+
+
         public async Task<IActionResult> GetServices(int typeId)
         {
             var services = await _context.Services
@@ -145,7 +159,7 @@ public async Task<IActionResult> Create(ReservationViewModel model)
         {
             var dates = await _context.Schedules
                 .Where(s => s.EmployeesId == employeeId)
-                .Select(s => new { value = s.Id, text = s.Date.ToString("yyyy-MM-dd") }) // Format date as needed
+                .Select(s => new { value = s.Id, text = s.Date.ToString("dd.MM.yyy") }) // Format date as needed
                 .ToListAsync();
             return Json(dates);
         }
