@@ -29,8 +29,8 @@ public partial class Client: Entity
         set => _lastName = value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
     }
 
-    [Required(ErrorMessage = "Введіть мобільний номер ")]
-    [Display(Name = "Мобільний номер телефону")]
+    [Required(ErrorMessage = "Введіть мобільний  ")]
+    [Display(Name = "Мобільний номер")]
     public string Phone { get; set; } = null!;
 
 

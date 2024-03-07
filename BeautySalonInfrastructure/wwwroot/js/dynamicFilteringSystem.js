@@ -221,3 +221,48 @@
 //});
 
 
+$(document).ready(function () {
+    $("#TypeServicesId").change(function () {
+        var typeId = $(this).val();
+        $.getJSON("/Reservations/GetServices", { typeId: typeId }, function (data) {
+            var items = "<option>Select a Service</option>";
+            $.each(data, function (i, service) {
+                items += "<option value='" + service.value + "'>" + service.text + "</option>";
+            });
+            $("#ServicesId").html(items);
+        });
+    });
+
+    $("#ServicesId").change(function () {
+        var serviceId = $(this).val();
+        $.getJSON("/Reservations/GetEmployees", { serviceId: serviceId }, function (data) {
+            var items = "<option>Select an Employee</option>";
+            $.each(data, function (i, employee) {
+                items += "<option value='" + employee.value + "'>" + employee.text + "</option>";
+            });
+            $("#EmployeeServicesId").html(items);
+        });
+    });
+
+    $("#EmployeeServicesId").change(function () {
+        var employeeId = $(this).val();
+        $.getJSON("/Reservations/GetDates", { employeeId: employeeId }, function (data) {
+            var items = "<option>Select a Date</option>";
+            $.each(data, function (i, date) {
+                items += "<option value='" + date.value + "'>" + date.text + "</option>";
+            });
+            $("#SchedulesDate").html(items);
+        });
+    });
+
+    $("#SchedulesDate").change(function () {
+        var dateId = $(this).val();
+        $.getJSON("/Reservations/GetTimes", { dateId: dateId }, function (data) {
+            var items = "<option>Select a Time</option>";
+            $.each(data, function (i, time) {
+                items += "<option value='" + time.value + "'>" + time.text + "</option>";
+            });
+            $("#SchedulesStartTime").html(items);
+        });
+    });
+});
