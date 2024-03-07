@@ -49,21 +49,19 @@
 {
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Service</th>
-                <th>Date</th>
-                <!-- Add other reservation details as needed -->
+            <tr>>
+                <th>Послуга</th>
+                <th>Початок</th>
+                <th>Дата</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var reservation in Model.Reservations)
             {
                 <tr>
-                    <td>@reservation.Id</td>
                     <td>@reservation.Services.Name</td>
-                    <td>@reservation.Schedules.Date.ToString("yyyy-MM-dd")</td>
-                    <!-- Add other reservation details as needed -->
+                    <td>@reservation.Schedules.StartTime</td>
+                    <td>@reservation.Schedules.Date.ToString("dd.MM.yyyy")</td>
                 </tr>
             }
         </tbody>
