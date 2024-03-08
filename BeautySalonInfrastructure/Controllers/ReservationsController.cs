@@ -53,61 +53,70 @@ namespace BeautySalonInfrastructure.Controllers
             return View(reservation);
         }
 
-        public IActionResult Create()
-{
-    var model = new ReservationViewModel();
-    PopulateDropdowns();
-
-    return View(model);
-}
-
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Create(ReservationViewModel model)
-{
-    PopulateDropdowns();
-
-    try
-    {
-        var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == model.Client.Email);
-
-        if (client == null)
+        public  IActionResult Create()
         {
-            client = new Client
-            {
-                FirstName = model.Client.FirstName,
-                LastName = model.Client.LastName,
-                Phone = model.Client.Phone,
-                Email = model.Client.Email
-            };
+            var model = new ReservationViewModel();
+            PopulateDropdowns();
 
-            _context.Clients.Add(client);
-            await _context.SaveChangesAsync();
+            return View(model);
         }
 
-        var reservation = new Reservation
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(ReservationViewModel model)
         {
-            ClientsId = client.Id,
-            ServicesId = model.ServicesId,
-            SchedulesId = model.SchedulesId,
-            TypeServicesId = model.TypeServicesId,
-            EmployeeServicesId = model.EmployeeServicesId,
-            Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") // Додаємо час та дату створення бронювання
-        };
+            PopulateDropdowns();
 
-        _context.Reservations.Add(reservation);
-        await _context.SaveChangesAsync();
+            try
+            {
+                var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == model.Client.Email);
 
-        return RedirectToAction("Index");
-    }
-    catch (Exception ex)
-    {
-        ModelState.AddModelError("", "An error occurred while creating the reservation.");
-        PopulateDropdowns();
+                if (client == null)
+                {
+                    client = new Client
+                    {
+                        FirstName = model.Client.FirstName,
+                        LastName = model.Client.LastName,
+                        Phone = model.Client.Phone,
+                        Email = model.Client.Email
+                    };
 
-        return View(model);
-    }
-}
+                    _context.Clients.Add(client);
+                    await _context.SaveChangesAsync();
+                }
+
+                var reservation = new Reservation
+                {
+                    ClientsId = client.Id,
+                    ServicesId = model.ServicesId,
+                    SchedulesId = model.SchedulesId,
+                    TypeServicesId = model.TypeServicesId,
+                    EmployeeServicesId = model.EmployeeServicesId,
+                    Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") // Додаємо час та дату створення бронювання
+                };
+                
+
+            if(ModelState.IsValid)
+                {
+                    _context.Reservations.Add(reservation);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(model);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while creating the reservation.");
+                PopulateDropdowns();
+
+                return View(model);
+            }
+        }
 
 
         private void PopulateDropdowns()

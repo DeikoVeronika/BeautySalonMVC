@@ -10,24 +10,29 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="reservationForm">
             <div class="form-group">
                 <label asp-for="Client.FirstName">Ім'я</label>
-                <input asp-for="Client.FirstName" class="form-control" placeholder="Введіть Ім'я" />
+                <input id="Client_FirstName" asp-for="Client.FirstName" class="form-control" placeholder="Введіть Ім'я" />
+                <span asp-validation-for="Client.FirstName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Client.LastName">Прізвище</label>
-                <input asp-for="Client.LastName" class="form-control" placeholder="Введіть Прізвище" />
+                <input id="Client_LastName" asp-for="Client.LastName" class="form-control" placeholder="Введіть Прізвище" />
+                <span asp-validation-for="Client.LastName" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Client.Phone" class="control-label"></label>
-                <input id="phoneInput" asp-for="Client.Phone" class="form-control" />
+                <input id="Client_Phone" asp-for="Client.Phone" class="form-control" />
                 <span asp-validation-for="Client.Phone" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Client.Email">Email</label>
-                <input asp-for="Client.Email" class="form-control" placeholder="Введіть Email" />
+                <input id="Client_Email" asp-for="Client.Email" class="form-control" placeholder="Введіть Email" />
+                <span asp-validation-for="Client.Email" class="text-danger"></span>
             </div>
 
             <hr />
@@ -71,7 +76,8 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="/js/phoneInput.js"></script>
     <script src="/js/dynamicFilteringSystem.js"></script>
-
+    <script src="/js/ValidationForReservation.js"></script>
+    @* defer *@
 }
 
 @* 
