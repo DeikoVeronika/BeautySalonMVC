@@ -6,6 +6,35 @@
     const phone = document.getElementById('Client_Phone');
     const email = document.getElementById('Client_Email');
 
+    const defaultPrefix = '+38';
+
+    if (!phone.value.startsWith(defaultPrefix)) {
+        phone.value = defaultPrefix;
+    }
+
+    firstName.addEventListener('input', function () {
+        this.value = this.value.replace(/[^А-ЯЄІЇҐЎа-яєіїґў']+/g, '');
+    });
+
+    lastName.addEventListener('input', function () {
+        this.value = this.value.replace(/[^А-ЯЄІЇҐЎа-яєіїґў']+/g, '');
+    });
+
+    phone.addEventListener('input', function () {
+        if (this.value.length < defaultPrefix.length) {
+            this.value = defaultPrefix;
+        } else if (this.value.length > 13) { // +38 and 9 digits for Ukrainian numbers
+            this.value = this.value.slice(0, 13);
+        }
+    });
+
+    phone.addEventListener('keypress', function (e) {
+        // Cancel input if it's not a digit
+        if (!/\d/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+
     form.addEventListener('submit', function (e) {
         if (!validateInputs()) {
             e.preventDefault();
@@ -19,7 +48,6 @@
         errorDisplay.innerText = message;
         inputGroup.classList.add('error');
         inputGroup.classList.remove('success');
-        element.value = '';
     };
 
     const setSuccess = (element) => {
@@ -52,9 +80,6 @@
         if (firstNameValue === '') {
             setError(firstName, 'Ім\'я є обов\'язковим полем');
             isValid = false;
-        } else if (!isAlpha(firstNameValue)) {
-            setError(firstName, 'Введіть лише букви');
-            isValid = false;
         } else {
             setSuccess(firstName);
         }
@@ -62,15 +87,15 @@
         if (lastNameValue === '') {
             setError(lastName, 'Прізвище є обов\'язковим полем');
             isValid = false;
-        } else if (!isAlpha(lastNameValue)) {
-            setError(lastName, 'Введіть лише букви');
-            isValid = false;
         } else {
             setSuccess(lastName);
         }
 
-        if (phoneValue === '') {
+        if (phoneValue === '' || phoneValue === defaultPrefix) {
             setError(phone, 'Телефон є обов\'язковим полем');
+            isValid = false;
+        } else if (phoneValue.length < 13) { // +38 and 9 digits for Ukrainian numbers
+            setError(phone, 'Телефон повинен містити 9 цифр після +38');
             isValid = false;
         } else {
             setSuccess(phone);

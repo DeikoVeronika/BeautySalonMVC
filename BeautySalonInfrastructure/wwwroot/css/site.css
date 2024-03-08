@@ -189,6 +189,27 @@ p[action="right"] {
     color: white;
 }
 
+/*start reservationForm*/
+
+.input-control input {
+    border: 1px solid #f0f0f0;
+}
+
+
+.input-control.success input {
+    border-color: #09c372;
+}
+
+.input-control.error input {
+    border-color: #ff3860;
+}
+
+.input-control .error {
+    color: #ff3860;
+}
+
+/*end reservationForm*/
+
 
 
 

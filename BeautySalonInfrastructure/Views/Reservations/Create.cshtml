@@ -11,54 +11,55 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" id="reservationForm">
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="Client.FirstName">Ім'я</label>
                 <input id="Client_FirstName" asp-for="Client.FirstName" class="form-control" placeholder="Введіть Ім'я" />
-                <span asp-validation-for="Client.FirstName" class="text-danger"></span>
+                <span asp-validation-for="Client.FirstName" class="text-danger error"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="Client.LastName">Прізвище</label>
                 <input id="Client_LastName" asp-for="Client.LastName" class="form-control" placeholder="Введіть Прізвище" />
-                <span asp-validation-for="Client.LastName" class="text-danger"></span>
+                <span asp-validation-for="Client.LastName" class="text-danger error"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="Client.Phone" class="control-label"></label>
                 <input id="Client_Phone" asp-for="Client.Phone" class="form-control" />
-                <span asp-validation-for="Client.Phone" class="text-danger"></span>
+                <span asp-validation-for="Client.Phone" class="text-danger error"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="Client.Email">Email</label>
                 <input id="Client_Email" asp-for="Client.Email" class="form-control" placeholder="Введіть Email" />
-                <span asp-validation-for="Client.Email" class="text-danger"></span>
+                <span asp-validation-for="Client.Email" class="text-danger error"></span>
             </div>
 
             <hr />
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="TypeServicesId">Тип послуги</label>
                 <select id="TypeServicesId" asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
             </div>
-            <div class="form-group">
+
+            <div class="form-group input-control">
                 <label asp-for="ServicesId">Послуга</label>
                 <select id="ServicesId" asp-for="ServicesId" class="form-control"></select>
             </div>
 
             <hr />
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="EmployeeServicesId">Майстер</label>
                 <select id="EmployeeServicesId" asp-for="EmployeeServicesId" class="form-control"></select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="SchedulesId">Дата</label>
                 <select id="SchedulesDate" asp-for="SchedulesId" class="form-control"></select>
             </div>
 
-            <div class="form-group">
+            <div class="form-group input-control">
                 <label asp-for="SchedulesId">Час початку</label>
                 <select id="SchedulesStartTime" asp-for="SchedulesId" class="form-control"></select>
             </div>
@@ -68,6 +69,7 @@
                 <a class="btn" asp-action="Index">Назад</a>
             </div>
         </form>
+
 
     </div>
 </div>
