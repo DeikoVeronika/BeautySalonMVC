@@ -54,3 +54,58 @@
 }
     </tbody>
 </table>
+
+<div class="containerChartClientReservations">
+    <div id="ChartClientReservations"></div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            $.get('/api/ChartClientReservations/JsonData')
+                .done(function (JsonData) {
+                    var data = google.visualization.arrayToDataTable(JsonData, false);
+
+                    // Визначте висоту на основі кількості рядків даних.
+                    var chartHeight = data.getNumberOfRows() * 60; // 30 - це висота кожного рядка в пікселях.
+
+                    var options = {
+                        title: "Кількість бронювань клієнта",
+                        width: 1000,
+                        height: chartHeight,
+                        colors: ['#dacdd2'],
+                        vAxis: { format: '0' },
+                        hAxis: { format: '0', minValue: 0, maxValue: Math.ceil(data.getColumnRange(1).max) },
+                        legend: 'none'
+                    };
+
+                    // Сортуємо дані за кількістю бронювань.
+                    var sortedData = google.visualization.data.group(
+                        data,
+                        [0],
+                        [{ 'column': 1, 'aggregation': google.visualization.data.sum, 'type': 'number' }]
+                    );
+                    sortedData.sort({ column: 1, desc: false });
+
+                    var chart = new google.visualization.BarChart(document.getElementById('ChartClientReservations'));
+                    chart.draw(sortedData, options);
+                })
+                .fail(function (error) {
+                    console.error('Error loading data:', error);
+                });
+        }
+    </script>
+
+
+
+
+
+
+}
