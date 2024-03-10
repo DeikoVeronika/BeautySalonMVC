@@ -29,7 +29,7 @@ public partial class Client: Entity
         set => _lastName = value.Substring(0, 1).ToUpperInvariant() + value.Substring(1);
     }
 
-    [Required(ErrorMessage = "Введіть мобільний  ")]
+    [RegularExpression(@"^\+380\d{9}$", ErrorMessage = "Введіть коректний номер телефону")]
     [Display(Name = "Мобільний номер")]
     public string Phone { get; set; } = null!;
 

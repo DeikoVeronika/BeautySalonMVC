@@ -6,7 +6,7 @@
     const phone = document.getElementById('Client_Phone');
     const email = document.getElementById('Client_Email');
 
-    const defaultPrefix = '+38';
+    const defaultPrefix = '+380';
 
     if (!phone.value.startsWith(defaultPrefix)) {
         phone.value = defaultPrefix;
@@ -92,10 +92,10 @@
         }
 
         if (phoneValue === '' || phoneValue === defaultPrefix) {
-            setError(phone, 'Телефон є обов\'язковим полем');
+            setError(phone);
             isValid = false;
-        } else if (phoneValue.length < 13) { // +38 and 9 digits for Ukrainian numbers
-            setError(phone, 'Телефон повинен містити 9 цифр після +38');
+        } else if (phoneValue.length < 13) { 
+            setError(phone);
             isValid = false;
         } else {
             setSuccess(phone);
