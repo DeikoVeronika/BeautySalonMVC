@@ -6,7 +6,6 @@ namespace BeautySalonDomain.Model;
 
 public partial class Schedule : Entity
 {
-
     [Display(Name = "Працівник")]
     public int EmployeesId { get; set; }
 
@@ -14,13 +13,15 @@ public partial class Schedule : Entity
     [Display(Name = "Дата")]
     public DateOnly Date { get; set; }
 
-
     [Required(ErrorMessage = "Оберіть час")]
     [Display(Name = "Початок")]
     public TimeOnly StartTime { get; set; }
 
     [Display(Name = "Кінець")]
     public TimeOnly EndTime { get; set; }
+
+    [Display(Name = "Заброньовано")]
+    public bool IsBooked { get; set; } // Додано нове поле
 
     public virtual Employee Employees { get; set; } = null!;
 

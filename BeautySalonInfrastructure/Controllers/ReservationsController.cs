@@ -85,6 +85,12 @@ namespace BeautySalonInfrastructure.Controllers
                     await _context.SaveChangesAsync();
                 }
 
+                var schedule = await _context.Schedules.FirstOrDefaultAsync(s => s.Id == model.SchedulesId);
+                if (schedule.IsBooked) // Перевіряємо, чи вже заброньовано графік
+                {
+                    return View(model);
+                }
+
                 var reservation = new Reservation
                 {
                     ClientsId = client.Id,
@@ -94,11 +100,12 @@ namespace BeautySalonInfrastructure.Controllers
                     EmployeeServicesId = model.EmployeeServicesId,
                     Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") // Додаємо час та дату створення бронювання
                 };
-                
 
-            if(ModelState.IsValid)
+
+                if (ModelState.IsValid)
                 {
                     _context.Reservations.Add(reservation);
+                    schedule.IsBooked = true; // Позначаємо графік як заброньований
                     await _context.SaveChangesAsync();
 
                     return RedirectToAction("Index");
@@ -123,14 +130,23 @@ namespace BeautySalonInfrastructure.Controllers
         {
             ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
             ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
+
+            // Створюємо список значень для EmployeeServicesId
             ViewBag.EmployeeServicesId = _context.EmployeeServices.Select(e => new SelectListItem
             {
                 Value = e.EmployeesId.ToString(),
                 Text = e.Employees.Name
             }).ToList();
-            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
-            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
+
+            // Групуємо доступні дати за датою та вибираємо перший елемент з кожної групи
+            ViewBag.SchedulesDate = new SelectList(_context.Schedules.Where(s => !s.IsBooked)
+                                                        .GroupBy(s => s.Date)
+                                                        .Select(g => g.First()), "Id", "Date");
+
+            // Тільки доступні часи (без групування)
+            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules.Where(s => !s.IsBooked), "Id", "StartTime");
         }
+
 
         [HttpGet]
         public JsonResult GetTypeServices()
@@ -167,7 +183,7 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> GetDates(int employeeId)
         {
             var dates = await _context.Schedules
-                .Where(s => s.EmployeesId == employeeId)
+                .Where(s => s.EmployeesId == employeeId && !s.IsBooked) // Додаємо перевірку на доступність
                 .Select(s => new { value = s.Id, text = s.Date.ToString("dd.MM.yyy") }) // Format date as needed
                 .ToListAsync();
             return Json(dates);
@@ -176,7 +192,7 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> GetTimes(int dateId)
         {
             var times = await _context.Schedules
-                .Where(s => s.Id == dateId)
+                .Where(s => s.Id == dateId && !s.IsBooked) // Додаємо перевірку на доступність
                 .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") }) // Format time as needed
                 .ToListAsync();
             return Json(times);
@@ -455,8 +471,27 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            return View(reservation);
+            try
+            {
+                // Знаходимо відповідний розклад
+                var schedule = await _context.Schedules.FindAsync(reservation.SchedulesId);
+                if (schedule != null)
+                {
+                    // Встановлюємо IsBooked на false, щоб розклад став доступним знову
+                    schedule.IsBooked = false;
+                }
+
+                _context.Reservations.Remove(reservation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Обробляємо помилку якщо щось пішло не так
+                return RedirectToAction(nameof(Index));
+            }
         }
+
 
         // POST: Reservations/Delete/5
         [HttpPost, ActionName("Delete")]
