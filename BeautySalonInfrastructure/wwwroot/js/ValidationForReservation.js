@@ -29,11 +29,86 @@
     });
 
     phone.addEventListener('keypress', function (e) {
-        // Cancel input if it's not a digit
         if (!/\d/.test(e.key)) {
             e.preventDefault();
         }
     });
+
+    // Завантаження даних з бд якщо користувач вводить пошту яка вже існує
+    email.addEventListener('input', function () {
+        const emailValue = email.value.trim();
+
+        if (isValidEmail(emailValue)) {
+            $.ajax({
+                url: '/Reservations/GetClientData',
+                type: 'GET',
+                data: { email: emailValue },
+                success: function (data) {
+                    if (data) {
+                        firstName.setAttribute('readonly', true);
+                        lastName.setAttribute('readonly', true);
+                        phone.setAttribute('readonly', true);
+
+                        firstName.value = data.firstName;
+                        lastName.value = data.lastName;
+                        phone.value = data.phone;
+                    } else {
+                        firstName.removeAttribute('readonly');
+                        lastName.removeAttribute('readonly');
+                        phone.removeAttribute('readonly');
+
+                        firstName.value = '';
+                        lastName.value = '';
+                        phone.value = defaultPrefix;
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error('Error:', errorThrown);
+                }
+            });
+        } else {
+            firstName.removeAttribute('readonly');
+            lastName.removeAttribute('readonly');
+            phone.removeAttribute('readonly');
+
+            firstName.value = '';
+            lastName.value = '';
+            phone.value = defaultPrefix;
+        }
+    });
+
+    const fields = [firstName, lastName, phone];
+    const message = "Ви не можете змінювати ці дані";
+
+
+    fields.forEach(field => {
+        const errorSpan = document.createElement('span');
+        errorSpan.style.color = 'red';
+        field.parentNode.insertBefore(errorSpan, field.nextSibling);
+
+        field.addEventListener('click', function () {
+            fields.forEach(f => {
+                if (f.nextSibling && f.nextSibling.tagName === 'SPAN') {
+                    f.nextSibling.textContent = '';
+                }
+            });
+
+
+            if (field.hasAttribute('readonly')) {
+                errorSpan.textContent = message;
+            }
+        });
+    });
+
+    // Очищення повідомлення про помилку при зміні пошти
+    email.addEventListener('input', function () {
+        fields.forEach(field => {
+            const errorSpan = field.nextSibling;
+            errorSpan.textContent = '';
+        });
+    });
+
+
 
     form.addEventListener('submit', function (e) {
         if (!validateInputs()) {
@@ -94,7 +169,7 @@
         if (phoneValue === '' || phoneValue === defaultPrefix) {
             setError(phone);
             isValid = false;
-        } else if (phoneValue.length < 13) { 
+        } else if (phoneValue.length < 13) {
             setError(phone);
             isValid = false;
         } else {

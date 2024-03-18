@@ -71,6 +71,7 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == model.Client.Email);
 
+
                 if (client == null)
                 {
                     client = new Client
@@ -146,6 +147,21 @@ namespace BeautySalonInfrastructure.Controllers
             // Тільки доступні часи (без групування)
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules.Where(s => !s.IsBooked), "Id", "StartTime");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetClientData(string email)
+        {
+            var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
+            if (client != null)
+            {
+                return Json(new { firstName = client.FirstName, lastName = client.LastName, phone = client.Phone });
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
 
 
         [HttpGet]
