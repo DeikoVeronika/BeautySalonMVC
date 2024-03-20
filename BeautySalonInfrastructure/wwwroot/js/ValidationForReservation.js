@@ -1,11 +1,9 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('reservationForm');
-
     const firstName = document.getElementById('Client_FirstName');
     const lastName = document.getElementById('Client_LastName');
     const phone = document.getElementById('Client_Phone');
     const email = document.getElementById('Client_Email');
-
     const defaultPrefix = '+380';
 
     if (!phone.value.startsWith(defaultPrefix)) {
@@ -35,78 +33,280 @@
     });
 
     // Завантаження даних з бд якщо користувач вводить пошту яка вже існує
-    email.addEventListener('input', function () {
-        const emailValue = email.value.trim();
 
-        if (isValidEmail(emailValue)) {
-            $.ajax({
-                url: '/Reservations/GetClientData',
-                type: 'GET',
-                data: { email: emailValue },
-                success: function (data) {
-                    if (data) {
-                        firstName.setAttribute('readonly', true);
-                        lastName.setAttribute('readonly', true);
-                        phone.setAttribute('readonly', true);
+    ////не стираються дані
+    //function handleEmailInput() {
+    //    const emailValue = email.value.trim();
 
-                        firstName.value = data.firstName;
-                        lastName.value = data.lastName;
-                        phone.value = data.phone;
-                    } else {
-                        firstName.removeAttribute('readonly');
-                        lastName.removeAttribute('readonly');
-                        phone.removeAttribute('readonly');
+    //    if (emailValue.length === 0) {
+    //        resetFields(true);
+    //    } else if (isValidEmail(emailValue)) {
+    //        getClientData(emailValue);
+    //    }
+    //}
 
-                        firstName.value = '';
-                        lastName.value = '';
-                        phone.value = defaultPrefix;
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error('Error:', errorThrown);
-                }
-            });
-        } else {
-            firstName.removeAttribute('readonly');
-            lastName.removeAttribute('readonly');
-            phone.removeAttribute('readonly');
+    //function getClientData(emailValue) {
+    //    $.ajax({
+    //        url: '/Reservations/GetClientData',
+    //        type: 'GET',
+    //        data: { email: emailValue },
+    //        success: function (data) {
+    //            if (data) {
+    //                setFields(data);
+    //            } else {
+    //                resetFields();
+    //            }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.error('Error:', errorThrown);
+    //        }
+    //    });
+    //}
 
-            firstName.value = '';
-            lastName.value = '';
-            phone.value = defaultPrefix;
-        }
-    });
+    ////не стираються дані
 
-    const fields = [firstName, lastName, phone];
-    const message = "Ви не можете змінювати ці дані";
+    //function handleEmailInput() {
+    //    const emailValue = email.value.trim();
+
+    //    if (emailValue.length === 0) {
+    //        resetFields(true);
+    //    } else if (isValidEmail(emailValue)) {
+    //        if (emailValue !== lastValidEmail) {
+    //            getClientData(emailValue, function (data) {
+    //                if (!data) {
+    //                    // Не скидати поля
+    //                    // resetFields(); // Закоментуйте цей рядок
+    //                }
+    //            });
+    //        }
+
+    //        lastValidEmail = emailValue;
+    //    }
+    //}
+
+    //function getClientData(emailValue, callback) {
+    //    $.ajax({
+    //        url: '/Reservations/GetClientData',
+    //        type: 'GET',
+    //        data: { email: emailValue },
+    //        success: function (data) {
+    //            if (data) {
+    //                setFields(data);
+    //                allowInvalidEmail = true;
+    //            } else {
+    //                // Не скидати поля
+    //                // allowInvalidEmail = true; // Закоментуйте цей рядок
+    //            }
+    //            callback(data);
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.error('Error:', errorThrown);
+    //        },
+    //    });
+    //}
 
 
-    fields.forEach(field => {
-        const errorSpan = document.createElement('span');
-        errorSpan.style.color = 'red';
-        field.parentNode.insertBefore(errorSpan, field.nextSibling);
 
-        field.addEventListener('click', function () {
-            fields.forEach(f => {
-                if (f.nextSibling && f.nextSibling.tagName === 'SPAN') {
-                    f.nextSibling.textContent = '';
-                }
-            });
+    ////не стираються дані
+    //function handleEmailInput() {
+    //    const emailValue = email.value.trim();
+
+    //    if (emailValue.length === 0) {
+    //        resetFields(true);
+    //    } else if (isValidEmail(emailValue)) {
+    //        getClientData(emailValue, function (data) {
+    //            if (data) {
+    //                setFields(data);
+    //            } else if (emailValue !== lastValidEmail) {
+    //                // Скинути поля, коли адреса електронної пошти змінена
+    //                resetFields();
+    //            }
+    //            lastValidEmail = emailValue;
+    //        });
+    //    }
+    //}
+
+    //function getClientData(emailValue, callback) {
+    //    $.ajax({
+    //        url: '/Reservations/GetClientData',
+    //        type: 'GET',
+    //        data: { email: emailValue },
+    //        success: function (data) {
+    //            if (data) {
+    //                allowInvalidEmail = true;
+    //            }
+    //            callback(data);
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.error('Error:', errorThrown);
+    //        },
+    //    });
+    //}
 
 
-            if (field.hasAttribute('readonly')) {
-                errorSpan.textContent = message;
-            }
-        });
-    });
 
-    // Очищення повідомлення про помилку при зміні пошти
-    email.addEventListener('input', function () {
-        fields.forEach(field => {
-            const errorSpan = field.nextSibling;
-            errorSpan.textContent = '';
-        });
-    });
+    //скидаються всі дані. не скидаються дані якщо введено існуючу пошту з клавіатури
+ 
+
+    //function getClientData(emailValue) {
+    //    $.ajax({
+    //        url: '/Reservations/GetClientData',
+    //        type: 'GET',
+    //        data: { email: emailValue },
+    //        success: function (data) {
+    //            if (data) {
+    //                setFields(data);
+    //                email.dataset.previousValue = emailValue;
+    //            } else {
+    //                resetFields();
+    //            }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.error('Error:', errorThrown);
+    //        }
+    //    });
+    //}
+
+
+    //function resetFields(keepData = false) {
+    //    firstName.removeAttribute('readonly');
+    //    lastName.removeAttribute('readonly');
+    //    phone.removeAttribute('readonly');
+
+    //    if (!keepData) {
+    //        if (!firstName.hasAttribute('readonly')) {
+    //            firstName.value = '';
+    //        }
+    //        if (!lastName.hasAttribute('readonly')) {
+    //            lastName.value = '';
+    //        }
+    //        if (!phone.hasAttribute('readonly')) {
+    //            phone.value = defaultPrefix;
+    //        }
+    //    }
+    //}
+
+
+
+    //let lastValidPhone = '';
+
+    //function handlePhoneInput(phoneValue) {
+    //    // Перевіряємо, чи є введене значення телефону в базі даних
+    //    $.ajax({
+    //        url: '/Reservations/GetClientData',
+    //        type: 'GET',
+    //        data: { phone: phoneValue },
+    //        success: function (data) {
+    //            if (data) {
+    //                // Якщо телефон існує, ми встановлюємо поля з даними клієнта
+    //                setFields(data);
+    //                phone.dataset.previousValue = phoneValue;
+    //                lastValidPhone = phoneValue;
+    //            } else {
+    //                // Якщо телефон не існує, ми не скидаємо поля
+    //                resetFields(true);
+    //            }
+    //        },
+    //        error: function (jqXHR, textStatus, errorThrown) {
+    //            console.error('Error:', errorThrown);
+    //        }
+    //    });
+    //}
+
+    //phone.addEventListener('input', function () {
+    //    let phoneValue = this.value;
+    //    if (phoneValue === defaultPrefix) {
+    //        // Якщо користувач видалив телефон, ми скидаємо поля тільки якщо телефон був в базі даних
+    //        if (lastValidPhone === phone.dataset.previousValue) {
+    //            resetFields();
+    //        }
+    //    } else if (phoneValue !== phone.dataset.previousValue) {
+    //        // Якщо користувач ввів новий телефон, ми обробляємо його
+    //        handlePhoneInput(phoneValue);
+    //    }
+    //});
+
+    //phone.addEventListener('input', clearErrorMessages);
+
+    //function resetFields(keepData = false) {
+    //    firstName.removeAttribute('readonly');
+    //    lastName.removeAttribute('readonly');
+    //    email.removeAttribute('readonly');
+
+    //    if (!keepData) {
+    //        if (!firstName.hasAttribute('readonly')) {
+    //            firstName.value = '';
+    //        }
+    //        if (!lastName.hasAttribute('readonly')) {
+    //            lastName.value = '';
+    //        }
+    //        if (!email.hasAttribute('readonly')) {
+    //            email.value = '';
+    //        }
+    //    }
+    //}
+
+
+
+    //function setFields(data) {
+    //    firstName.setAttribute('readonly', true);
+    //    lastName.setAttribute('readonly', true);
+    //    email.setAttribute('readonly', true);
+
+    //    firstName.value = data.firstName;
+    //    lastName.value = data.lastName;
+    //    email.value = data.email;
+    //}
+
+
+
+
+    ////function resetFields() {
+    ////    firstName.removeAttribute('readonly');
+    ////    lastName.removeAttribute('readonly');
+    ////    phone.removeAttribute('readonly');
+
+    ////    firstName.value = '';
+    ////    lastName.value = '';
+    ////    phone.value = defaultPrefix;
+    ////}
+
+    //function handleFieldClick(field) {
+    //    fields.forEach(f => {
+    //        if (f.nextSibling && f.nextSibling.tagName === 'SPAN') {
+    //            f.nextSibling.textContent = '';
+    //        }
+    //    });
+
+    //    if (field.hasAttribute('readonly')) {
+    //        const errorSpan = field.nextSibling;
+    //        errorSpan.textContent = message;
+    //    }
+    //}
+
+    //function clearErrorMessages() {
+    //    fields.forEach(field => {
+    //        const errorSpan = field.nextSibling;
+    //        errorSpan.textContent = '';
+    //    });
+    //}
+
+    //const fields = [firstName, lastName, phone];
+    //const message = "Ви не можете змінювати ці дані оскільки використовуєте пошту яка вже зареєстрована.";
+
+    //fields.forEach(field => {
+    //    const errorSpan = document.createElement('span');
+    //    errorSpan.style.color = 'red';
+    //    field.parentNode.insertBefore(errorSpan, field.nextSibling);
+
+    //    field.addEventListener('click', function () {
+    //        handleFieldClick(field);
+    //    });
+    //});
+
+    //email.addEventListener('input', handleEmailInput);
+    //email.addEventListener('input', clearErrorMessages);
+
 
 
 
@@ -134,6 +334,7 @@
         inputGroup.classList.remove('error');
     };
 
+
     const isValidEmail = (email) => {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
@@ -144,6 +345,7 @@
         return re.test(String(text));
     };
 
+
     const validateInputs = () => {
         const firstNameValue = firstName.value.trim();
         const lastNameValue = lastName.value.trim();
@@ -153,14 +355,20 @@
         let isValid = true;
 
         if (firstNameValue === '') {
-            setError(firstName, 'Ім\'я є обов\'язковим полем');
+            setError(firstName);
+            isValid = false;
+        } else if (firstNameValue.length < 2) {
+            setError(firstName);
             isValid = false;
         } else {
             setSuccess(firstName);
         }
 
         if (lastNameValue === '') {
-            setError(lastName, 'Прізвище є обов\'язковим полем');
+            setError(lastName);
+            isValid = false;
+        } else if (lastNameValue.length < 2) {
+            setError(lastName);
             isValid = false;
         } else {
             setSuccess(lastName);
@@ -177,10 +385,10 @@
         }
 
         if (emailValue === '') {
-            setError(email, 'Email є обов\'язковим полем');
+            setError(email);
             isValid = false;
         } else if (!isValidEmail(emailValue)) {
-            setError(email, 'Введіть дійсний email');
+            setError(email);
             isValid = false;
         } else {
             setSuccess(email);
@@ -188,4 +396,6 @@
 
         return isValid;
     };
+
+
 });

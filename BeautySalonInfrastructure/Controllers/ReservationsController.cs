@@ -99,7 +99,7 @@ namespace BeautySalonInfrastructure.Controllers
                     SchedulesId = model.SchedulesId,
                     TypeServicesId = model.TypeServicesId,
                     EmployeeServicesId = model.EmployeeServicesId,
-                    Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") // Додаємо час та дату створення бронювання
+                    Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") //  час та дату створення бронювання
                 };
 
 
@@ -148,19 +148,19 @@ namespace BeautySalonInfrastructure.Controllers
             ViewBag.SchedulesStartTime = new SelectList(_context.Schedules.Where(s => !s.IsBooked), "Id", "StartTime");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetClientData(string email)
-        {
-            var client = await _context.Clients.FirstOrDefaultAsync(c => c.Email == email);
-            if (client != null)
-            {
-                return Json(new { firstName = client.FirstName, lastName = client.LastName, phone = client.Phone });
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> GetClientData(string phone)
+        //{
+        //    var client = await _context.Clients.FirstOrDefaultAsync(c => c.Phone == phone);
+        //    if (client != null)
+        //    {
+        //        return Json(new { firstName = client.FirstName, lastName = client.LastName, email = client.Email });
+        //    }
+        //    else
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
 
 

@@ -12,7 +12,7 @@ public partial class Client: Entity
 
 
     [Required(ErrorMessage = "Введіть ім'я ")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "Ім'я не може містити у собі менше двох символів")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Ім'я повинно містити у собі принаймні дві літери")]
     [Display(Name = "Ім'я")]
     public string FirstName
     {
@@ -21,7 +21,7 @@ public partial class Client: Entity
     }
 
     [Required(ErrorMessage = "Введіть прізвище ")]
-    [StringLength(100, MinimumLength = 2, ErrorMessage = "Прізвище не може містити у собі менше двох символів")]
+    [StringLength(100, MinimumLength = 2, ErrorMessage = "Прізвище повинно містити у собі принаймні дві літери")]
     [Display(Name = "Прізвище")]
     public string LastName
     {

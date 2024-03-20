@@ -30,7 +30,7 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr style="@(item.IsBooked ? "background-color:red !important;" : "")">
+        <tr class="@(item.IsBooked ? "table-danger" : "")">
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
