@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Phone)
             </th>
             <th class="table-name">
-                @Html.DisplayNameFor(model => model.Birthday)
+                Дата народження
             </th>
             <th class="table-name">
                 @Html.DisplayNameFor(model => model.Email)
@@ -37,7 +37,10 @@
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                @if (!string.IsNullOrEmpty(item.Phone))
+                {
+                    <text>(@item.Phone.Substring(3, 3)) @item.Phone.Substring(6, 3)-@item.Phone.Substring(9, 2)-@item.Phone.Substring(11)</text>
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Birthday)

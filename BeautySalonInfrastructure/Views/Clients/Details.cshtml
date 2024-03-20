@@ -24,11 +24,15 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Phone)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.Phone))
+            {
+                <text>(@Model.Phone.Substring(3, 3)) @Model.Phone.Substring(6, 3)-@Model.Phone.Substring(9, 2)-@Model.Phone.Substring(11)</text>
+            }
         </dd>
+
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
+                Дата народження
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Birthday)

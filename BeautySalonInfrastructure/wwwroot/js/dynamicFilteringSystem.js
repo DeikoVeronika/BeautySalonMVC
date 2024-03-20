@@ -278,27 +278,50 @@ $(document).ready(function () {
     $("#EmployeeServicesId").change(function () {
         var employeeId = $(this).val();
         $.getJSON("/Reservations/GetDates", { employeeId: employeeId }, function (data) {
-            var items = "<option class='disable-option' value='' disabled selected>Оберіть дату</option>";
-            $.each(data, function (i, date) {
-                items += "<option value='" + date.value + "'>" + date.text + "</option>";
-            });
-            $("#SchedulesDate").html(items);
-            $("#SchedulesDate").prop("disabled", false);
+            if (data && data.length > 0) {
+                var items = "<option class='disable-option' value='' disabled selected>Оберіть дату</option>";
+                $.each(data, function (i, date) {
+                    items += "<option value='" + date.value + "'>" + date.text + "</option>";
+                });
+                $("#SchedulesDate").html(items);
+                $("#SchedulesDate").prop("disabled", false);
+            } else {
+                $("#SchedulesDate").html("<option value='' disabled selected>Немає доступних дат</option>");
+                $("#SchedulesDate").prop("disabled", true);
+            }
 
             $("#SchedulesStartTime").html('');
             $("#SchedulesStartTime").prop("disabled", true);
         });
     });
 
+    //$("#SchedulesDate").change(function () {
+    //    var date = $(this).val();
+    //    $.getJSON("/Reservations/GetTimes", { date: date }, function (data) {
+    //        var items = "<option class='disable-option' value='' disabled selected>Оберіть час</option>";
+    //        $.each(data, function (i, time) {
+    //            items += "<option value='" + time.value + "'>" + time.text + "</option>";
+    //        });
+    //        $("#SchedulesStartTime").html(items);
+    //        $("#SchedulesStartTime").prop("disabled", false);
+    //    });
+    //});
+
     $("#SchedulesDate").change(function () {
-        var dateId = $(this).val();
-        $.getJSON("/Reservations/GetTimes", { dateId: dateId }, function (data) {
-            var items = "<option class='disable-option' value='' disabled selected>Оберіть час</option>";
-            $.each(data, function (i, time) {
-                items += "<option value='" + time.value + "'>" + time.text + "</option>";
-            });
-            $("#SchedulesStartTime").html(items);
-            $("#SchedulesStartTime").prop("disabled", false);
+        var date = $(this).val();
+        var employeeId = $("#EmployeeServicesId").val();
+        $.getJSON("/Reservations/GetTimes", { employeeId: employeeId, date: date }, function (data) {
+            if (data && data.length > 0) {
+                var items = "<option class='disable-option' value='' disabled selected>Оберіть час</option>";
+                $.each(data, function (i, time) {
+                    items += "<option value='" + time.value + "'>" + time.text + "</option>";
+                });
+                $("#SchedulesStartTime").html(items);
+                $("#SchedulesStartTime").prop("disabled", false);
+            } else {
+                $("#SchedulesStartTime").html("<option value='' disabled selected>Немає доступних часів</option>");
+                $("#SchedulesStartTime").prop("disabled", true);
+            }
         });
     });
 

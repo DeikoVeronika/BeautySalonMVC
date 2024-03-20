@@ -131,21 +131,13 @@ namespace BeautySalonInfrastructure.Controllers
         {
             ViewBag.TypeServicesId = new SelectList(_context.TypeServices, "Id", "Name");
             ViewBag.ServicesId = new SelectList(_context.Services, "Id", "Name");
-
-            // Створюємо список значень для EmployeeServicesId
             ViewBag.EmployeeServicesId = _context.EmployeeServices.Select(e => new SelectListItem
             {
                 Value = e.EmployeesId.ToString(),
                 Text = e.Employees.Name
             }).ToList();
-
-            // Групуємо доступні дати за датою та вибираємо перший елемент з кожної групи
-            ViewBag.SchedulesDate = new SelectList(_context.Schedules.Where(s => !s.IsBooked)
-                                                        .GroupBy(s => s.Date)
-                                                        .Select(g => g.First()), "Id", "Date");
-
-            // Тільки доступні часи (без групування)
-            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules.Where(s => !s.IsBooked), "Id", "StartTime");
+            ViewBag.SchedulesDate = new SelectList(_context.Schedules, "Id", "Date");
+            ViewBag.SchedulesStartTime = new SelectList(_context.Schedules, "Id", "StartTime");
         }
 
         //[HttpGet]
@@ -199,20 +191,49 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> GetDates(int employeeId)
         {
             var dates = await _context.Schedules
-                .Where(s => s.EmployeesId == employeeId && !s.IsBooked) // Додаємо перевірку на доступність
-                .Select(s => new { value = s.Id, text = s.Date.ToString("dd.MM.yyy") }) // Format date as needed
+                .Where(s => s.EmployeesId == employeeId && !s.IsBooked)
+                .Select(s => s.Date.ToString("dd.MM.yyy"))
+                .Distinct()
+                .Select(date => new { value = date, text = date })
                 .ToListAsync();
             return Json(dates);
         }
 
-        public async Task<IActionResult> GetTimes(int dateId)
+
+        //public async Task<IActionResult> GetTimes(string date)
+        //{
+        //    var times = _context.Schedules
+        //        .AsEnumerable()
+        //        .Where(s => s.Date.ToString("dd.MM.yyy") == date && !s.IsBooked)
+        //        .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") })
+        //        .ToList();
+        //    return Json(times);
+        //}
+
+        //public async Task<IActionResult> GetTimes(int employeeId, string date)
+        //{
+        //    var times = _context.Schedules
+        //        .AsEnumerable()
+        //        .Where(s => s.EmployeesId == employeeId && s.Date.ToString("dd.MM.yyy") == date && !s.IsBooked)
+        //        .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") })
+        //        .ToList();
+        //    return Json(times);
+        //}
+
+        public async Task<IActionResult> GetTimes(int employeeId, string date)
         {
-            var times = await _context.Schedules
-                .Where(s => s.Id == dateId && !s.IsBooked) // Додаємо перевірку на доступність
-                .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") }) // Format time as needed
-                .ToListAsync();
+            var times = _context.Schedules
+                .AsEnumerable()
+                .Where(s => s.EmployeesId == employeeId && s.Date.ToString("dd.MM.yyy") == date && !s.IsBooked)
+                .Select(s => new { value = s.Id, text = s.StartTime.ToString("HH:mm") })
+                .ToList();
             return Json(times);
         }
+
+
+
+
+
 
 
 

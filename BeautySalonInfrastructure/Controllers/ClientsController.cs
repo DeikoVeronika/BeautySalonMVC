@@ -63,12 +63,8 @@ namespace BeautySalonInfrastructure.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FirstName,LastName,Phone,Birthday,Email,Id")] Client client)
         {
-            // Ensure the phone number has the correct format
-            const string defaultPrefix = "+380";
-            if (client.Phone == null || !client.Phone.StartsWith(defaultPrefix) || client.Phone.Length != 13)
-            {
-                ModelState.AddModelError("Phone", "Неправильний формат мобільного номеру");
-            }
+            client.Phone = "+" + new string(client.Phone.Where(c => char.IsDigit(c)).ToArray());
+
 
             // Validate other model properties
             if (ModelState.IsValid)
@@ -94,6 +90,8 @@ namespace BeautySalonInfrastructure.Controllers
             {
                 return NotFound();
             }
+
+
             return View(client);
         }
 
@@ -109,11 +107,15 @@ namespace BeautySalonInfrastructure.Controllers
                 return NotFound();
             }
 
-            const string defaultPrefix = "+380";
-            if (client.Phone == null || !client.Phone.StartsWith(defaultPrefix) || client.Phone.Length != 13)
-            {
-                ModelState.AddModelError("Phone", "Неправильний формат мобільного номеру");
-            }
+
+            //const string defaultPrefix = "+380";
+            //if (client.Phone == null || !client.Phone.StartsWith(defaultPrefix) || client.Phone.Length != 13)
+            //{
+            //    ModelState.AddModelError("Phone", "Неправильний формат мобільного номеру");
+            //}
+
+            client.Phone = "+" + new string(client.Phone.Where(c => char.IsDigit(c)).ToArray());
+
 
             if (ModelState.IsValid)
             {

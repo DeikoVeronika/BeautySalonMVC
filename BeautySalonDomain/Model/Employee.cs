@@ -11,6 +11,7 @@ public partial class Employee : Entity
 
     [Required(ErrorMessage = "Введіть ім'я працівника")]
     [StringLength(100, MinimumLength = 2, ErrorMessage = "Ім'я не може містити у собі менше двох символів")]
+    [RegularExpression("^[А-Яа-яІіЇїЄє]+$", ErrorMessage = "Ім'я може містити лише українські літери")]
     [Display(Name = "Ім'я")]
     public string Name
     {
@@ -23,7 +24,6 @@ public partial class Employee : Entity
     public virtual ICollection<EmployeeService> EmployeeServices { get; set; } = new List<EmployeeService>();
 
     [Display(Name = "Посада")]
-
     public virtual Position Positions { get; set; } = null!;
 
     public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
