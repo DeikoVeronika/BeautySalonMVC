@@ -99,7 +99,7 @@ namespace BeautySalonInfrastructure.Controllers
                     SchedulesId = model.SchedulesId,
                     TypeServicesId = model.TypeServicesId,
                     EmployeeServicesId = model.EmployeeServicesId,
-                    Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") //  час та дату створення бронювання
+                    Info = DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy") 
                 };
 
 

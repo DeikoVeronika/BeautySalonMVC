@@ -133,7 +133,7 @@ namespace BeautySalonInfrastructure.Controllers
 
             // Get type services *and* preserve selected value
             var typeServices = _context.TypeServices.OrderBy(p => p.Name);
-            ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", service.TypeServiceId); // Initially set to current value
+            ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", service.TypeServiceId);
 
             return View(service);
         }
@@ -148,15 +148,13 @@ namespace BeautySalonInfrastructure.Controllers
                 return RedirectToAction("Details", "TypeServices", new { id = service.TypeServiceId });
             }
 
-            // Preserve selected value from the model
             int selectedTypeServiceId = service.TypeServiceId;
 
-            // Validation check for name uniqueness
             if (_context.Services.Any(s => s.Name == service.Name && s.Id != service.Id))
             {
                 ModelState.AddModelError("Name", "Ця назва вже використовується. Оберіть інше.");
                 var typeServices = _context.TypeServices.OrderBy(ts => ts.Name).ToList();
-                ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", selectedTypeServiceId); // Use preserved value
+                ViewBag.TypeServices = new SelectList(typeServices, "Id", "Name", selectedTypeServiceId); 
                 return View(service);
             }
 
@@ -206,7 +204,7 @@ namespace BeautySalonInfrastructure.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var service = await _context.Services.FindAsync(id);
-            var typeServiceId = service.TypeServiceId; // Save the TypeServiceId before deleting the service
+            var typeServiceId = service.TypeServiceId; 
             _context.Services.Remove(service);
 
             await _context.SaveChangesAsync();
