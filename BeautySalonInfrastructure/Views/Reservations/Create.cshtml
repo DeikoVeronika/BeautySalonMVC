@@ -11,6 +11,9 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" id="reservationForm">
+            <fieldset>
+                <legend>Контактна інформація</legend>
+            </fieldset>            
             <div class="form-group input-control">
                 <label asp-for="Client.FirstName">Ім'я</label>
                 <input id="Client_FirstName" asp-for="Client.FirstName" class="form-control" placeholder="Введіть Ім'я" />
@@ -39,7 +42,9 @@
             </div>
 
             <hr />
-
+            <fieldset>
+                <legend>Вибір послуги</legend>
+            </fieldset>            
             <div class="form-group input-control">
                 <label asp-for="TypeServicesId">Тип послуги</label>
                 <select id="TypeServicesId" asp-for="TypeServicesId" asp-items="ViewBag.TypeServicesId" class="form-control"></select>
@@ -51,7 +56,9 @@
             </div>
 
             <hr />
-
+            <fieldset>
+                <legend>Інформація про бронювання</legend>
+            </fieldset>
             <div class="form-group input-control">
                 <label asp-for="EmployeeServicesId">Майстер</label>
                 <select id="EmployeeServicesId" asp-for="EmployeeServicesId" class="form-control"></select>
